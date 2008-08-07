@@ -1,4 +1,0 @@
-<area shape="rect" href="$classcDownPickup.html" title="{cDownPickup\n||+ cDownPickup()\l+ ~cDownPickup()\l+ update()\l}" alt="" coords="5,483,133,587">
-<area shape="rect" href="$classcScorePickup.html" title="{cScorePickup\n|+ y2vel\l|+ cScorePickup()\l+ ~cScorePickup()\l+ update()\l}" alt="" coords="157,483,288,587">
-<area shape="rect" href="$classcTPPickup.html" title="&quot;ToPlaytable&quot; Pickup &#45; goes from the ship to the table." alt="" coords="312,448,424,622">
-<area shape="rect" href="$classiObject.html" title="Provides a basic object interface." alt="" coords="157,6,288,136">

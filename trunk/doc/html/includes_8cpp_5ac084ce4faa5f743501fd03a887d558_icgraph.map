@@ -1,8 +1,0 @@
-<area shape="rect" href="$includes_8h.html#5d595d84d8fbac52afb180d70fd06223" title="GenerateRandomNumber" alt="" coords="107,78,275,102">
-<area shape="rect" href="$classcPlayMode.html#9394975a38f9fd679f85bd8052991e97" title="cPlayMode::CreatePickups" alt="" coords="327,54,505,78">
-<area shape="rect" href="$classcMonoMode.html#f7e7084c8a80667f9b1b266ef284c10c" title="cMonoMode::CreatePickups" alt="" coords="324,102,508,126">
-<area shape="rect" href="$cPlayMode_8h.html#136b13e275d28e2afadf49e2ca319a76" title="generate_pickups_thread" alt="" coords="559,54,724,78">
-<area shape="rect" href="$classcRandomMode.html#03e24eee22411c771ac74f9f2063b89c" title="cRandomMode::init" alt="" coords="773,6,907,30">
-<area shape="rect" href="$classcPlayMode.html#6d58169ee910f126d12b826ae865328a" title="cPlayMode::init" alt="" coords="784,54,896,78">
-<area shape="rect" href="$classcMonoMode.html#1ac9feba1166226ff8fe0f8d0d379c2f" title="cMonoMode::init" alt="" coords="781,102,899,126">
-<area shape="rect" href="$classcPlayMode.html#1fcc15c62aa9c47cc058215926bb55b5" title="cPlayMode::mainloop" alt="" coords="955,54,1101,78">
