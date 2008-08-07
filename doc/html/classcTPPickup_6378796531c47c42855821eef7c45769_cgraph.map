@@ -1,5 +1,0 @@
-<area shape="rect" href="$classcPlayTable.html#5b9aa98039554ba0713d0c5f083d5d1a" title="Add a pickup to the table, usually from a ship collision." alt="" coords="187,54,339,78">
-<area shape="rect" href="$classcPlayTable.html#ebcf152be87d5204441e74e4d34283bf" title="Drop a column in case of an overfill." alt="" coords="387,6,547,30">
-<area shape="rect" href="$classcPlayTable.html#258832cb8f032c284ed326749a7d3897" title="cPlayTable::floodfill" alt="" coords="400,54,533,78">
-<area shape="rect" href="$classcPlayTable.html#2ec2026c1692df6ca72630f531006f67" title="Get the height that a new pickup would drop into in the lane." alt="" coords="393,102,540,126">
-<area shape="rect" href="$cPlayTable_8cpp.html#31e7a0d7f4773e3f437ab5dcbd70bd0e" title="_floodfill" alt="" coords="595,54,664,78">

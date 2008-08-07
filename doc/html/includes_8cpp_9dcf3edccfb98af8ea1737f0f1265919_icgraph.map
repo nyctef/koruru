@@ -1,9 +1,0 @@
-<area shape="rect" href="$main_8h.html#d8b46e19dcbf735688b523d87b3ac8e2" title="InitGL" alt="" coords="315,6,371,30">
-<area shape="rect" href="$includes_8h.html#ff964b67fcabe155d88dff5b06278f69" title="Set common GL variables to predetermined sets of values." alt="" coords="147,96,219,120">
-<area shape="rect" href="$main_8h.html#d19abaacb073bdef7940926f64b2aace" title="Init" alt="" coords="520,6,560,30">
-<area shape="rect" href="$main_8cpp.html#e66f6b31b5ad750f1fe042a706a4e3d4" title="main" alt="" coords="663,6,711,30">
-<area shape="rect" href="$classcRandomMode.html#03e24eee22411c771ac74f9f2063b89c" title="cRandomMode::init" alt="" coords="276,54,409,78">
-<area shape="rect" href="$classcPlayMode.html#6d58169ee910f126d12b826ae865328a" title="cPlayMode::init" alt="" coords="287,102,399,126">
-<area shape="rect" href="$classcMonoMode.html#1ac9feba1166226ff8fe0f8d0d379c2f" title="cMonoMode::init" alt="" coords="284,150,401,174">
-<area shape="rect" href="$classcMenuMode.html#5934eec1a4fce7a79f6455b64d943eb8" title="cMenuMode::mainloop" alt="" coords="267,198,419,222">
-<area shape="rect" href="$classcPlayMode.html#1fcc15c62aa9c47cc058215926bb55b5" title="cPlayMode::mainloop" alt="" coords="467,102,613,126">
