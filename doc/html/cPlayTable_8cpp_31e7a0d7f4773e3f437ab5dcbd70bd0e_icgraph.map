@@ -1,0 +1,6 @@
+<area shape="rect" href="$classcPlayTable.html#258832cb8f032c284ed326749a7d3897" title="cPlayTable::floodfill" alt="" coords="124,30,257,54">
+<area shape="rect" href="$classcPlayTable.html#5b9aa98039554ba0713d0c5f083d5d1a" title="Add a pickup to the table, usually from a ship collision." alt="" coords="307,6,459,30">
+<area shape="rect" href="$classcPlayTable.html#730a8698ef050d4068181927b76367f0" title="Update the table." alt="" coords="317,54,448,78">
+<area shape="rect" href="$classcTPPickup.html#6378796531c47c42855821eef7c45769" title="Update the pickup state." alt="" coords="509,6,640,30">
+<area shape="rect" href="$classcPlayMode.html#c14c033539693baad0dd7a8db04a48b8" title="Updates game state." alt="" coords="507,54,643,78">
+<area shape="rect" href="$classcPlayMode.html#1fcc15c62aa9c47cc058215926bb55b5" title="cPlayMode::mainloop" alt="" coords="691,54,837,78">

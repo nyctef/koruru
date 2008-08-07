@@ -1,0 +1,3 @@
+<area shape="rect" href="$classcMonoMode.html" title="{cMonoMode\n||+ cMonoMode()\l+ ~cMonoMode()\l+ init()\l+ drawship()\l+ drawtrack()\l+ CreatePickups()\l+ changemonocolour()\l}" alt="" coords="5,758,155,918">
+<area shape="rect" href="$classcRandomMode.html" title="{cRandomMode\n||+ cRandomMode()\l+ ~cRandomMode()\l+ init()\l}" alt="" coords="179,786,315,890">
+<area shape="rect" href="$classiGameMode.html" title="{iGameMode\n|+ name\l+ parent\l+ event\l|+ iGameMode()\l+ ~iGameMode()\l+ mainloop()\l}" alt="" coords="103,7,223,138">

@@ -1,0 +1,8 @@
+<area shape="rect" href="$classiGameMode.html" title="{iGameMode\n|+ name\l+ parent\l+ event\l|+ iGameMode()\l+ ~iGameMode()\l+ mainloop()\l}" alt="" coords="37,708,157,839">
+<area shape="rect" href="$classcShip.html" title="{cShip\n|+ bank\l+ xpos\l+ bob\l+ bobvel\l+ respawntime\l+ respawnstart\l+ respawning\l+ model\l+ bpm\l|+ cShip()\l+ ~cShip()\l+ update()\l+ draw()\l+ bump()\l+ respawn()\l}" alt="" coords="181,646,288,902">
+<area shape="rect" href="$classiObject.html" title="Provides a basic object interface." alt="" coords="5,250,136,380">
+<area shape="rect" href="$classc3DSModel.html" title="A wrapper around lib3ds." alt="" coords="160,200,307,430">
+<area shape="rect" href="$classcFont.html" title="Creates and renders a texture&#45;mapped bitmap fixed&#45;width font." alt="" coords="285,455,395,612">
+<area shape="rect" href="$classcTexture.html" title="A simple wrapper for texture functions." alt="" coords="247,7,441,138">
+<area shape="rect" href="$classcAnimatedTexture.html" title="Provides an animated texture with the same interface as cTexture." alt="" coords="381,207,536,423">
+<area shape="rect" href="$classcPlayTable.html" title="Controls the play table for a game." alt="" coords="401,639,516,908">

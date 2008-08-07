@@ -1,0 +1,6 @@
+<area shape="rect" href="$classiGameMode.html" title="iGameMode" alt="" coords="7,54,97,78">
+<area shape="rect" href="$classcMenuMode.html" title="A basic menu mode." alt="" coords="148,6,239,30">
+<area shape="rect" href="$classcPlayMode.html" title="cPlayMode" alt="" coords="151,54,236,78">
+<area shape="rect" href="$classcQuitMode.html" title="cQuitMode" alt="" coords="152,102,235,126">
+<area shape="rect" href="$classcMonoMode.html" title="cMonoMode" alt="" coords="297,30,388,54">
+<area shape="rect" href="$classcRandomMode.html" title="cRandomMode" alt="" coords="289,78,396,102">

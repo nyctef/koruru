@@ -1,0 +1,5 @@
+<area shape="rect" href="$classcPickup.html" title="Encapsulates one pickup." alt="" coords="41,522,137,736">
+<area shape="rect" href="$classiObject.html" title="Provides a basic object interface." alt="" coords="5,242,136,373">
+<area shape="rect" href="$classcPlayTable.html" title="Controls the play table for a game." alt="" coords="180,494,295,764">
+<area shape="rect" href="$classcAnimatedTexture.html" title="Provides an animated texture with the same interface as cTexture." alt="" coords="160,200,315,416">
+<area shape="rect" href="$classcTexture.html" title="A simple wrapper for texture functions." alt="" coords="44,6,239,137">
