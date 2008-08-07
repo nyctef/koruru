@@ -1,0 +1,111 @@
+ 
+ | add models for objects (3ds loader?)
+ ?  get textured and stuff
+       check if blender doing textures right.
+       maybe replace with cell shading
+   understand c3dsmodel.cpp
+   think about scrapping 3ds altogether - apparently .obj is easier, and easy to extend (eg vertex/face colours)
+     look into writing a blender exporter
+       adapt current .obj exporter
+   	 http://www.opengl.org/discussion_boards/ubbthreads.php?ubb=showflat&Number=235815
+  add cell shading - nehe lesson 37
+   more importantly, make lighting better in general.
+ 
+ add some text and UI
+  add a way to send debug messages to the screen (console or somesuch)
+ 
+ improve keyboard control (discrete lanes) and mouse 'feel' (accell. & decell. to mouse position)?
+ | add ship banking during a turn.
+   smooth out.
+     moving averages?
+   set to zero at beginning of game .. maybe lock for a few seconds.
+ 
+ add more block transitions (blocks fall down table slowly)
+ 
+ save transformation matrices to get to different places (table base, pickup spawn etc) in one place to simplify collisions
+ 
+ create track, think about animated textures for playtable.
+   have a playtable be a grid of quads, use textured quad for each place?
+   add path bends
+   need to rethink the way the track is generated: ie calc vertices and next set of vertices, draw quads between, move on one, etc.
+ 
+ add sky floaters - generate when a pickup picked up. (particle system, billboards)
+     need to add friction (general slowdown) so there aren't too many particles in one place - ie they spread out then stop 
+     need to increase speedand |stop breakage of other rendering.
+       speed idea - like having a list of dead particles, maybe a list of dead particle systems to use.
+       need to do some profiling
+ 
+ |create a ship class.
+  have camera pull out when ship going fast, push in when slow.
+ 
+ transfer some functions from utils.cpp to includes.cpp (those that don't depend on anything in the project) and 
+  then swap utils.cpp and includes.cpp to make the names more accurate.
+   get rid of one of these
+ 
+ |add exceptions for error-checking. Define a couple of error classes, say error and warning, for fatal and non-fatal errors.
+ 
+ extend texture object for multitexturing or animated textures later.
+ 
+ rewrite all magic numbers with #defines at least.
+ 
+ decide on a coding convention - specifically capitalisation style - and stick to it.
+ 
+ find out why optimisation causes lighting to fail
+ 
+ fix some memory leaks
+   most will be where objects with lists of pointers don't free the memory before chucking away the pointer.
+   check that flying pickups are getting deleted when they go out of range.
+   look at using auto_ptrs
+       can't use with std containers apparently.
+ 
+ have a proper go-over sometime, doc everything, check everything makes sense etc. Preferably while drunk.
+ 
+ add death condition to random mode and a timer to monomode. Make both properly random.
+ 
+ 'fix' particle z-ordering.
+   ie make sure they render underneath the track
+   maybe do the same for pickups: always under the ship.
+ 
+ add respawn after overfill
+  add drop animation of some sort.
+  add respawn timer
+ 
+ revamp scoring 
+  add scores for individual blocks
+  add animated scores
+   make sure score doesn't increase until the block reaches it
+   add side-scores
+ 
+ make pickup-adding thread nicer
+  make it stop while the game isn't running the relevant mode.
+ 
+ add music player
+  visualisation stuffs, beat detection
+  playlists
+  		Music player todo:
+  		 bug: loading a lot of songs takes (quite a bit of) time
+  		 add skipping, going back on tracks
+  		 maybe load less during afs creation, more on demand.
+  		  could move loading stuff to an init() function, called after previous song starts playing.
+  		 playlist
+  		  determine which playlist loader to use
+  		  determine additional file data from id3/whatever tags in file
+  		  shuffle: go though the playlist and swap each element with another one randomly.
+  		  
+ mouse selection: use two calls to gluunproject with different depths so that you get a straight ray into the screen
+ 
+ transparent textures: get working for score and playtable.
+ 
+ high score tables
+  save to file
+   use pls format
+    one header for each game mode, then playername=score in each section
+ 
+ |rewrite modes code: use state machine
+  machine driver: has a map of char*s / states <-- just in main() atm, might move into another object.
+  states run mainloop then return a char* that describes another the next state to go to.
+  
+ add global options object, support for setting options in config file, commandline, in gui. Save to config file.
+  has char* / option object map. char* is option name, option object below 
+   option has a char*, bool and double, then an enum saying which is used. (including whether the double should be used as an int)
+ 

@@ -1,0 +1,10 @@
+<area shape="rect" href="$classcShip.html#d8a161c66b9a857e1f2bf3bfab1d0b40" title="cShip::draw" alt="" coords="213,5,301,29">
+<area shape="rect" href="$classcMenuItem.html#594526074a0f79d666a474f248c5eb6b" title="cMenuItem::draw" alt="" coords="197,53,317,77">
+<area shape="rect" href="$classcPickup.html#0101991fa9ef448c959be15caf32a271" title="Render the pickup." alt="" coords="205,101,309,125">
+<area shape="rect" href="$classcPlayMode.html#afd239dd1f761b74e218096b013e74e0" title="cPlayMode::drawtrack" alt="" coords="385,150,535,174">
+<area shape="rect" href="$classcMonoMode.html#706925afeb2d554aa800510b84bb0af4" title="cMonoMode::drawtrack" alt="" coords="180,200,335,224">
+<area shape="rect" href="$classcPlayMode.html#a58a982ce0b3a6fe868a282f8e21ea1f" title="cPlayMode::drawship" alt="" coords="388,5,532,29">
+<area shape="rect" href="$classcMonoMode.html#8cd8b269ab4e025fb299a69c4f171f9b" title="cMonoMode::drawship" alt="" coords="384,53,536,77">
+<area shape="rect" href="$classcPlayMode.html#07d82a908c552ac73b0beb9bfadf801f" title="Performs all the drawing functions." alt="" coords="585,78,748,102">
+<area shape="rect" href="$classcPlayMode.html#1fcc15c62aa9c47cc058215926bb55b5" title="cPlayMode::mainloop" alt="" coords="797,78,944,102">
+<area shape="rect" href="$classcTPPickup.html#56f34daf28e2b7b790f5c280308a13b1" title="Render the pickup." alt="" coords="400,101,520,125">

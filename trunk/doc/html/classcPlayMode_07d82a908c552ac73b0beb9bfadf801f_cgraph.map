@@ -1,0 +1,11 @@
+<area shape="rect" href="$classcPlayTable.html#18b298f56e3d9051287deda5ef42c8d5" title="Draw the table." alt="" coords="233,5,353,29">
+<area shape="rect" href="$classcPlayMode.html#a58a982ce0b3a6fe868a282f8e21ea1f" title="cPlayMode::drawship" alt="" coords="221,53,365,77">
+<area shape="rect" href="$classcPlayMode.html#5b40786f649407640a94b3ab076a8a02" title="cPlayMode::DrawText" alt="" coords="220,152,367,176">
+<area shape="rect" href="$classcPlayMode.html#afd239dd1f761b74e218096b013e74e0" title="cPlayMode::drawtrack" alt="" coords="421,102,571,126">
+<area shape="rect" href="$classcScore.html#888d47f2a0ee736afcaa8deb68e3587b" title="cScore::get" alt="" coords="249,200,337,224">
+<area shape="rect" href="$classcFont.html#db887874b958978527114541246bcbf6" title="Returns the width in pixels of the given string if using the current font." alt="" coords="228,248,359,272">
+<area shape="rect" href="$classcAnimatedTexture.html#0efbba6e857253df1b8a0271beb903fd" title="Bind the texture. Used the same as cTexture." alt="" coords="417,5,575,29">
+<area shape="rect" href="$classcShip.html#d8a161c66b9a857e1f2bf3bfab1d0b40" title="cShip::draw" alt="" coords="452,53,540,77">
+<area shape="rect" href="$classc3DSModel.html#f75412da827e3e8bd005d0a363aa57c2" title="c3DSModel::Draw" alt="" coords="624,78,749,102">
+<area shape="rect" href="$classcFont.html#013a0398de4b769106b7f473751171ad" title="Draw a string at the current coordinates." alt="" coords="452,152,540,176">
+<area shape="rect" href="$classcTexture.html#3a2b11275e9d6f03a4af5359ec6b57fb" title="Bind the texture so that it will be used for drawing polygons." alt="" coords="635,152,739,176">

@@ -1,0 +1,63 @@
+jtg> If you've got a setup like bejewlled, what's a good way to detect groups of three etc?
+* Exophase (~Exophase@c24.kaplab.iu.edu) has joined #gp2xdev
+<jtg> hey Alam_Debi 
+<jtg> *Alvin
+<Alvin^> I am so that guy
+<jtg> heh
+<Dr_Ian> what the shit is bejewelleled
+* mithAFK (~mithris@ua-83-227-219-197.cust.bredbandsbolaget.se) has joined #gp2xdev
+* empee gives channel operator status to mithAFK
+<Dr_Ian> ok I see
+<Alvin^> jtg: linked lists of some kind?
+<Dr_Ian> record which counters have changed
+<jtg> exam leave has started, so I've been pretty much coding all day. Now my head is funny X/
+<Dr_Ian> and when you check for groups, only check groups which involve those
+* mithAFK has quit (Read error: Connection reset by peer)
+<Dr_Ian> OR: Brute force the shit out of it
+<jtg> Dr_Ian: that's a good idea
+<jtg> thanks
+<Dr_Ian> I hope you mean the first idea
+<Alvin^> he doesn't
+<jtg> yeah :)
+* Horscht has quit (http://www.geisterfahrer.org)
+<Orkie> jtg: flood fill
+* Guyfawkes has quit (Read error: Connection reset by peer)
+* Guyfawkes (~misterc@87-194-13-28.bethere.co.uk) has joined #gp2xdev
+<Orkie> fill vertically and fill horizontally
+<jtg> to wikipedia!
+<jtg> looks good, thanks :)
+<Orkie> it's what i do for burokku, but i let it fill in any direction :)
+<Dr_Ian> how do the groups attach
+<Dr_Ian> 3 or more in a row?
+<Orkie> Dr_Ian: yes
+<Dr_Ian> for jtg
+<jtg> nah, you can have a corner shape aswell, but not diagonals (only filling in four directions)
+<Orkie> you can? :S
+<Orkie> i've only ever played bejewled once :D
+<jtg> Orkie: it's not going to be bejewled exactly, but it's the same problem
+<Orkie> still, v/h flood fill will do it
+<joyrider> flood fill is what i did as well, you just keep calling the same function with the X & Y values changed
+<jtg> I'm thinking of doing something like audiosurf over the summer - it's just 2d for now and there isn't any music stuff but the basics seem fairly easy, then it'll be 3d if I get time :)
+<Orkie> joyrider: yep, and you can make it count by adding the return value from one call to a variable and returning that
+<joyrider> yup
+<Dr_Ian> oh
+<joyrider> although i returned a score :)
+<Dr_Ian> you could do that, but it would be a rather ugly solution
+<Orkie> Dr_Ian: there are other flood fills
+<Dr_Ian> I'm sure in this case it is somewhat trivial to calculate the largest possible group size
+<Orkie> but for a small board, you never really going to have a stack overflow
+<Dr_Ian> yes exactly
+<Orkie> and this is the easiest flood fill
+<Dr_Ian> probably not
+<Orkie> yes, it is. i've looked into it a lot for burokku
+<Orkie> which is the same as jtg's pattern ;)
+<Dr_Ian> isn't burokku similar to yoshi's jigface
+<Orkie> jigface? :S
+<joyrider> hmm you swap columns right ? in that yoshi game
+<joyrider> at least that's what i remember from the gameboy
+<Dr_Ian> yeah, so you'd only need to do a horizontal check and a vertical check. flood fill would be way excessive.
+<Orkie> Dr_Ian: if he wants branches coming off the middle, he does
+<Orkie> (need some kind of flood fill)
+<Dr_Ian> oh, yeah
+<Dr_Ian> but a recursive one with no backsight is a bit ugly
+<Dr_Ian> I mean slightly wasteful and not so pretty in code
