@@ -7,10 +7,11 @@ cMonoMode::~cMonoMode() {
 }
 
 int cMonoMode::init () {
-	InitMode(RESET_MODE | GAME_MODE);
-	score = 0;
-	speed = 2*bpm/60;
-	if (createpickup_thread == NULL) createpickup_thread = SDL_CreateThread(generate_pickups_thread, (void*)this);
+	
+	cPlayMode::init();
+	
+	speed *= 2;
+	
 	return 0;
 }
 
@@ -32,8 +33,6 @@ void cMonoMode::drawtrack() {
 		  	glTranslatef(0, 0, -18);
 		}
 	glPopMatrix();
-	
-	changemonocolour();
 }
 
 void cMonoMode::CreatePickups() {
@@ -70,8 +69,10 @@ void cMonoMode::CreatePickups() {
 	}
 }
 
-void cMonoMode::changemonocolour() {
+void cMonoMode::mode_specific_updates() {
 
+	// change mono colour
+	
 	static long monofactor = 400000;
 
 	for (int i=0; i<3; i++) {
@@ -81,4 +82,8 @@ void cMonoMode::changemonocolour() {
 		color[MONO][1][i] = color[MONO][0][i]*0.8;
 		color[MONO][2][i] = color[MONO][1][i]*0.8;
 	}
+	
+	// check for end condition
+	
+	
 }

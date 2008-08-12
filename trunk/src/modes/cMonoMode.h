@@ -16,7 +16,7 @@ public:
 	void drawtrack();
 	void CreatePickups();
 	
-	void changemonocolour();
+	void mode_specific_updates();
 	
 	using cPlayMode::pickupcount;
 };

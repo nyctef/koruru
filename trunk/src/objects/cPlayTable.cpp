@@ -18,7 +18,8 @@ cPlayTable::cPlayTable(int nwidth, int nheight) {
 	}
 	
 	texture1 = new cAnimatedTexture("data/tex1.png", 10, 50);
-	texture2 = new cAnimatedTexture("data/tex2.png", 10, 50);
+	texture2 = new cAnimatedTexture("data/tex2b.png", 10, 50);
+	texture3 = new cAnimatedTexture("data/tex3.png", 10, 50);
 
 }
 
@@ -141,10 +142,14 @@ void cPlayTable::draw() {
 			glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 			glColor3fv(color[positions[i][j]->colour][0]);
 			
-			if ((positions[i][j]->lit == 1) && (positions[i][j]->colour != WHITE)) {
-				texture1->bind(); // animated
-			} else { 
+			if (positions[i][j]->colour == NONE) {
 				texture2->bind();
+			} else {
+				if ((positions[i][j]->lit == 1) && (positions[i][j]->colour != WHITE)) {
+					texture1->bind(); // animated
+				} else { 
+					texture3->bind();
+				}
 			}
 			
 			glCallList(dlDrawQuad);

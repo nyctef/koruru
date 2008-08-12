@@ -87,21 +87,23 @@ public:
 	void update();
 	/** \brief Draw objects controlled by the manager */
 	void draw();
-	/** \brief Remove game objects; reset game essentially */
-	//void init(int mode);
 	
 	int mode;
 	
-	//virtual void generatepickupsequence();
+	// create a new game mode by just overriding these if possible.
 	virtual void drawtrack();
 	virtual void drawship();
 	virtual void CreatePickups();
+	virtual void mode_specific_updates();
+	virtual int  init();
 	
-	string mainloop();
-	virtual int init();
-	string HandleEvents();
-	void Update();
-	void DrawScreen();
+	// these functions can be overridden but remember to call the parent function first.
+	virtual string mainloop();
+	virtual string HandleEvents();
+	virtual void Update();
+	virtual void DrawScreen();
+	
+	// util func
 	void DrawText(char* text, int xpos, int ypos);
 };
 

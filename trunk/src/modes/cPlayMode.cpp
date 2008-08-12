@@ -1,6 +1,6 @@
 #include "cPlayMode.h"
 
-cPlayMode::cPlayMode(const char* name) : ship(ship_model, bpm), iGameMode(name) {
+cPlayMode::cPlayMode(const char* name) : iGameMode(name), ship(ship_model, bpm){
 	font = new cFont("data/font3.png", 14, 32, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789[]()^£""';:#");
 	trackdisp = pickupcount = 0; 
 	
@@ -12,8 +12,7 @@ cPlayMode::cPlayMode(const char* name) : ship(ship_model, bpm), iGameMode(name) 
 }
 
 cPlayMode::~cPlayMode() {
-	quit_createpickup_thread = true;
-	SDL_WaitThread(createpickup_thread, NULL);
+	
 }
 
 
@@ -23,13 +22,19 @@ int cPlayMode::init() {
 	score = 0;
 	speed = 1*bpm/60;
 	if (createpickup_thread == NULL) createpickup_thread = SDL_CreateThread(generate_pickups_thread, (void*)this);
-	return 0;
 		
 	// OH EM GEE MEMORY LEAKS
 	objectlist.clear();
 	pickuplist.clear();
 	particleslist.clear();
+	
 	playtable = *(new cPlayTable(3,7));
+	
+	srand(time(NULL));
+	
+	score.reset();
+	
+	return 0;
 }
 
 string cPlayMode::mainloop() {
@@ -59,6 +64,9 @@ string cPlayMode::mainloop() {
       //frames++; if (SDL_GetTicks()-frametime >= 1000) {cout << frames << " fps." << endl; frames = 0; frametime = SDL_GetTicks();} // calc fps.
       
 	}
+	
+	quit_createpickup_thread = true;
+	SDL_WaitThread(createpickup_thread, NULL);
 }
  
 /** \brief Loops through waiting events, then takes keyboard state for arrow keys.
@@ -124,8 +132,6 @@ void cPlayMode::Update() {
 			GLfloat* sbbmax = TransformPoint3fv(ship.modelviewmatrix, ship.model->bbmax); 
 			
 			if (AABBCollision3D(abbmin, abbmax, sbbmin, sbbmax)) {
-				// add to playtable
-				//playtable.addpickup((*pt)->lane, (*pt)->colour);
 				
 				// set up particles
 				/*GLfloat startposition[3] = {-8+(*pt)->lane*8, 5, -100};
@@ -141,11 +147,11 @@ void cPlayMode::Update() {
 				cPickup* tmpptr = new cTPPickup((*pt)->lane, playtable.getheight((*pt)->lane), (*pt)->colour, &(playtable));
 				delete (*pt);
 				
-				ship.bump();
-				
 				list< iObject* >::iterator it = find( objectlist.begin(), objectlist.end(), (*pt) );
 				(*pt) = tmpptr;
 				(*it) = (*pt); 
+				
+				ship.bump();
 			}               
 		}
 	
@@ -196,6 +202,8 @@ void cPlayMode::Update() {
 		}	
 	}
 	if (score < 0) score = 0;
+	
+	mode_specific_updates();
 }
 
 /** \brief Performs all the drawing functions.
@@ -250,6 +258,8 @@ void cPlayMode::drawship() {
 
 void cPlayMode::drawtrack() {
 	
+		glColor3fv(color[WHITE][2]);
+	
 		trackdisp += 0.06*dtime*speed;
 		if (trackdisp > 18) trackdisp -= 18;
 		glTranslatef(0, 0, 20+trackdisp);
@@ -259,7 +269,7 @@ void cPlayMode::drawtrack() {
 		}
 }
 
-void cPlayMode::DrawText(char* text, int xpos, int ypos) { /// Draws text on the screen.
+void cPlayMode::DrawText(char* text, int xpos, int ypos) { 
 	
 	glMatrixMode(GL_PROJECTION);
 	 glPushMatrix();
@@ -289,7 +299,7 @@ void cPlayMode::CreatePickups() {
 		
 		if (SDL_GetTicks() - newobjecttimer >= 250) {
 			if (pickupcount == 0) {
-				if (GenerateRandomNumber(1, 6) == 1) { 
+				if (GenerateRandomNumber(1, 3) == 1) { 
 					currentposition = GenerateRandomNumber(0,2);
 					currentcolour = GenerateRandomNumber(1,5);
 					pickupcount = GenerateRandomNumber (1,2);
@@ -330,3 +340,5 @@ void cPlayMode::addparticles(cParticleSystem* particles) {
 	particleslist.push_back(particles);
 	add(particles);	
 }
+
+void cPlayMode::mode_specific_updates() {};
