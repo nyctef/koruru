@@ -8,9 +8,12 @@ cRandomMode::~cRandomMode()
 }
 
 int cRandomMode::init () {
-	InitMode(RESET_MODE | GAME_MODE);
-	score = 0;
-	speed = 1.5*bpm/60;
-	if (createpickup_thread == NULL) createpickup_thread = SDL_CreateThread(generate_pickups_thread, (void*)this);
+	
+	cPlayMode::init();
+	
+	speed *= 2;
+	
 	return 0;
 }
+
+void cRandomMode::mode_specific_updates() {}

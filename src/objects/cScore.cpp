@@ -31,7 +31,7 @@ void cScore::update() {
 	atime = SDL_GetTicks();
 }
 
-void cScore::reset(){score = 0;}
+void cScore::reset(){score = target = 0;}
 void cScore::add(long amount){target += amount; speed++;}
 void cScore::subtract(long amount){target -= amount; speed++;}
 unsigned long cScore::get(){return score;}

@@ -9,6 +9,7 @@ public:
 	virtual ~cRandomMode();
 	
 	int init();
+	void mode_specific_updates();
 };
 
 #endif /*CRANDOMMODE_H_*/

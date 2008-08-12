@@ -70,6 +70,7 @@ public:
 	
 	cAnimatedTexture* texture1;
 	cAnimatedTexture* texture2;
+	cAnimatedTexture* texture3;
 };
 
 enum addpickup_returns {PT_FINE = 0, PT_OVERFILL = 1};
