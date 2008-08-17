@@ -29,7 +29,7 @@ public:
 	/** \brief The lane the pickup is in */
 	int lane;
 	
-	/** \brief Update the pickup state */
+	/** \brief update the pickup state */
 	virtual void update();
 	/** \brief Render the pickup */
 	virtual void draw();

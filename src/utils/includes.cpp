@@ -1,7 +1,7 @@
 #include "includes.h"
 
 //int numcolours = 8;
-GLfloat color[9][3][3] = { {{0.3, 0.3, 0.3},  {0, 0, 0},  {0, 0, 0}},					// none
+GLfloat colours[9][3][3] = { {{0.3, 0.3, 0.3},  {0, 0, 0},  {0, 0, 0}},					// none
 						   {{1, 0, 0},  {0.8, 0, 0},  {0.5, 0, 0}},						// red
 	                       {{1, 1, 0},  {0.8, 0.8, 0},  {0.5, 0.5, 0}},					// yellow
 	                       {{0, 1, 0},  {0, 0.8, 0},  {0, 0.5, 0}},						// green
@@ -12,7 +12,7 @@ GLfloat color[9][3][3] = { {{0.3, 0.3, 0.3},  {0, 0, 0},  {0, 0, 0}},					// non
 	                       {{1, 0, 0},  {0.8, 0, 0},  {0.5, 0, 0}},						// mono
 					     };
 					  
-GLfloat monocolor[3] = {1, 0, 0};
+GLfloat monocolour[3] = {1, 0, 0};
 
 int DEFAULT_COLOUR = 0;
 
@@ -33,7 +33,7 @@ unsigned long _rand(void) {
  	return (y+y+1)*v+rand()%2; // +rand%2 since _rand seems to give non-random numbers mod2.
  } 
  
-unsigned GenerateRandomNumber( unsigned low, unsigned high) { /// Generate a random integer between the two arguments.
+unsigned random_int( unsigned low, unsigned high) { /// Generate a random integer between the two arguments.
 	
 	return ((_rand()%(high-low+1))+low);
 
@@ -44,7 +44,7 @@ unsigned GenerateRandomNumber( unsigned low, unsigned high) { /// Generate a ran
  * Will probably get added to with development - this is a good place to store some boilerplate code.
  *  \param mode 	A bitmask determining what variables to set.
  */
-bool InitMode(long long mode) {
+bool init_mode(long long mode) {
 	 if (mode & RESET_MODE) {
 	    glClearColor( 0, 0, 0, 1 );
 	 	glDisable(GL_BLEND);
@@ -56,6 +56,8 @@ bool InitMode(long long mode) {
 		glDisable(GL_LIGHT4); glDisable(GL_LIGHT5); glDisable(GL_LIGHT6); glDisable(GL_LIGHT7);
 		glDisable(GL_COLOR_MATERIAL);
 		glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+		
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	 }
 	 if (mode & NORMAL_PROJECTION) {
 	    glMatrixMode( GL_PROJECTION );
@@ -67,12 +69,12 @@ bool InitMode(long long mode) {
 		
 	}
 	if (mode & MENU_MODE) {
-		InitMode(NORMAL_PROJECTION);
+		init_mode(NORMAL_PROJECTION);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_ALPHA);
 	}
 	if (mode & GAME_MODE) {
-		InitMode(NORMAL_PROJECTION);
+		init_mode(NORMAL_PROJECTION);
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);
 		glEnable(GL_NORMALIZE); 
@@ -83,7 +85,7 @@ bool InitMode(long long mode) {
 		glEnable(GL_LIGHTING);
 	    glEnable(GL_COLOR_MATERIAL);
 		glEnable(GL_TEXTURE_2D);
-		//glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+
 		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 		
 		glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
@@ -94,11 +96,11 @@ bool InitMode(long long mode) {
 		GLfloat pos[] = { 0.0, 4.0, -7 };
 		glLightfv(GL_LIGHT0, GL_POSITION, pos);	
 	}
-	CheckErrors();
+	check_errors();
 	return true;
 }
 
-bool CheckErrors() {
+bool check_errors() {
 
 	GLenum errCode;
 	

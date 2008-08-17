@@ -1,6 +1,7 @@
 #include "cPlayMode.h"
 
-cPlayMode::cPlayMode(const char* name) : iGameMode(name), ship(ship_model, bpm){
+cPlayMode::cPlayMode(const char* name) : iGameMode(name), ship(ship_model, bpm) {
+	
 	font = new cFont("data/font3.png", 14, 32, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789[]()^£""';:#");
 	trackdisp = pickupcount = 0; 
 	
@@ -8,6 +9,8 @@ cPlayMode::cPlayMode(const char* name) : iGameMode(name), ship(ship_model, bpm){
 	quit_createpickup_thread = false;
 	
 	createpickup_thread = NULL;
+	
+	score_pane = new cTextPane(font, SCREEN_WIDTH - font->string_width("          ")/2, 40, 0, 0);
 	
 }
 
@@ -18,9 +21,13 @@ cPlayMode::~cPlayMode() {
 
 int cPlayMode::init() {
 	
-	InitMode(RESET_MODE | GAME_MODE);
+	debug_pane.set("Loading new game .. \n");
+	draw_frame();
+	
 	score = 0;
 	speed = 1*bpm/60;
+	
+	debug_pane.add("creating pickup thread \n");
 	if (createpickup_thread == NULL) createpickup_thread = SDL_CreateThread(generate_pickups_thread, (void*)this);
 		
 	// OH EM GEE MEMORY LEAKS
@@ -34,6 +41,11 @@ int cPlayMode::init() {
 	
 	score.reset();
 	
+	ship.draw();
+	
+	start_time = SDL_GetTicks();
+	
+	debug_pane.add("\n                  .. done\n");
 	return 0;
 }
 
@@ -42,8 +54,7 @@ string cPlayMode::mainloop() {
 	init();
 	
 	atime = SDL_GetTicks();
-/*	Uint32 frametime = SDL_GetTicks();  //
-    Uint32 frames = 0;                 // calc fps*/
+/*	Uint32 frametime = SDL_GetTicks(), frames = 0;                 // ♫ calc fps*/
     
     string tmpquit;
     
@@ -54,8 +65,14 @@ string cPlayMode::mainloop() {
       if ((tmpquit = HandleEvents()) != "continue") {
 	      return tmpquit;
       }
-      Update();
-      DrawScreen();
+      
+      if ((tmpquit = update()) != "continue") {
+	      return tmpquit;
+      }
+      
+      
+       draw_screen();
+      draw_frame();
       
       SDL_Delay(20);
       
@@ -97,15 +114,15 @@ string cPlayMode::HandleEvents() {
       }
       // check state of keyboard  
       Uint8 *keys = SDL_GetKeyState(NULL);
-      if (keys[SDLK_LEFT])  (ship.xpos <= 0) ? ship.xpos = 0 : ship.xpos -= 0.001*dtime*speed;
-      if (keys[SDLK_RIGHT]) (ship.xpos >= 1) ? ship.xpos = 1 : ship.xpos += 0.001*dtime*speed;
+      if (keys[SDLK_LEFT])  (ship.xpos <= 0) ? ship.xpos = 0 : ship.xpos -= 0.001*dtime;
+      if (keys[SDLK_RIGHT]) (ship.xpos >= 1) ? ship.xpos = 1 : ship.xpos += 0.001*dtime;
       
       return "continue";
 }
 
 /** \brief Updates game state 
  */
-void cPlayMode::Update() {
+string cPlayMode::update() {
 		
 	// update all (generic) objects 
 	list< iObject* >::iterator it;	
@@ -137,8 +154,8 @@ void cPlayMode::Update() {
 				/*GLfloat startposition[3] = {-8+(*pt)->lane*8, 5, -100};
 				GLfloat velocity[3] = {0, 0.001, 0.002};
 				GLfloat force[3] = {0, -0.001, 0};
-				cParticleSystem* ps = new cParticleSystem(100, startposition, velocity, 0.3, 0.5, force, color[(*pt)->colour][0]);
-				//cout << color[(*pt)->colour][0][0] << " " << color[(*pt)->colour][0][1] << " " << color[(*pt)->colour][0][2] << endl; 
+				cParticleSystem* ps = new cParticleSystem(100, startposition, velocity, 0.3, 0.5, force, colour[(*pt)->colour][0]);
+				//cout << colour[(*pt)->colour][0][0] << " " << colour[(*pt)->colour][0][1] << " " << colour[(*pt)->colour][0][2] << endl; 
 				addparticles(ps);*/
 				
 				if ((*pt)->colour == WHITE) score -= 500;
@@ -174,7 +191,7 @@ void cPlayMode::Update() {
 		if (it != objectlist.end()) {
 			objectlist.erase(it);
 		} else {
-			cout << "warning: pickup not found in objectlist" << endl;
+			debug_pane.add("warning: pickup not found in objectlist\n");
 		}
 	  }
 	}
@@ -203,13 +220,15 @@ void cPlayMode::Update() {
 	}
 	if (score < 0) score = 0;
 	
-	mode_specific_updates();
+	return "continue";
 }
 
 /** \brief Performs all the drawing functions.
  */
-void cPlayMode::DrawScreen() {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+void cPlayMode::draw_screen() {
+	
+	init_mode(RESET_MODE | GAME_MODE);
+	glDisable(GL_TEXTURE_2D);
 	
 	// reset position
 	glLoadIdentity();
@@ -219,9 +238,10 @@ void cPlayMode::DrawScreen() {
 	          (ship.xpos-0.5)*2, 0, -30,
 	          0, 1, 0);
 	
+	
 	//draw the player
-	glPushMatrix();	
-		drawship();
+	glPushMatrix();
+	 drawship();
 	glPopMatrix();
 	
 	 //draw objects	
@@ -242,12 +262,16 @@ void cPlayMode::DrawScreen() {
 	glPopMatrix();
 	 
 	 //draw text
-	char out[20];
+	/*char out[20];
 	sprintf(out, "%li", score.get()); // %li - long int 
-	DrawText(out, (SCREEN_WIDTH - font->string_width(out))/2, SCREEN_HEIGHT-40);
+	DrawText(out, (SCREEN_WIDTH - font->string_width(out))/2, SCREEN_HEIGHT-40);*/
+	score_pane->set(score.get());
+	score_pane->draw();
 	
-	//finally, swap out to the screen.
-	SDL_GL_SwapBuffers();
+	debug_pane.draw();
+	
+	//finally, swap out to the screen. (after the function)
+	
 }
 
 void cPlayMode::drawship() {
@@ -258,7 +282,7 @@ void cPlayMode::drawship() {
 
 void cPlayMode::drawtrack() {
 	
-		glColor3fv(color[WHITE][2]);
+		glColor3fv(colours[WHITE][2]);
 	
 		trackdisp += 0.06*dtime*speed;
 		if (trackdisp > 18) trackdisp -= 18;
@@ -299,10 +323,10 @@ void cPlayMode::CreatePickups() {
 		
 		if (SDL_GetTicks() - newobjecttimer >= 250) {
 			if (pickupcount == 0) {
-				if (GenerateRandomNumber(1, 3) == 1) { 
-					currentposition = GenerateRandomNumber(0,2);
-					currentcolour = GenerateRandomNumber(1,5);
-					pickupcount = GenerateRandomNumber (1,2);
+				if (random_int(1, 3) == 1) { 
+					currentposition = random_int(0,2);
+					currentcolour = random_int(1,5);
+					pickupcount = random_int (1,2);
 	  			}		
 			} else {
 				// add pickups
@@ -341,4 +365,3 @@ void cPlayMode::addparticles(cParticleSystem* particles) {
 	add(particles);	
 }
 
-void cPlayMode::mode_specific_updates() {};

@@ -6,6 +6,7 @@ extern Uint32 dtime;
 GLuint dlDrawQuad;
 float speed;
 GLuint bpm;
+cTextPane debug_pane;
 
 // these shouldn't need to be global, but will be a bit more difficult to integrate (should get done for sake of cleanliness)
 c3DSModel* ship_model;
@@ -17,7 +18,7 @@ Uint32 	SCREEN_HEIGHT = 800;
 Uint32 	SCREEN_WIDTH = 1280;
 int     SCREEN_BPP = 32;
 
-int main() { /// Our esteemed main function. Calls Init(), then runs the game loop before exiting.
+int main() { 
 	try {		
 	    //Initialize
 	    if( Init() == false ) {
@@ -29,7 +30,7 @@ int main() { /// Our esteemed main function. Calls Init(), then runs the game lo
 		modes["quit"] = new cQuitMode("quit");
 		modes["default_random_game"] = new cRandomMode("default_random_game");
 		modes["default_mono_game"] = new cMonoMode("default_mono_game");
-		cMenuMode* main_menu = new cMenuMode("Main menu", "main_menu");
+		cMenuMode* main_menu = new cTitleMenuMode("Main menu", "main_menu");
 		modes["main_menu"] = main_menu;
 			main_menu->additem("endurance", "default_random_game");
 			main_menu->additem("mono", "default_mono_game");
@@ -37,20 +38,13 @@ int main() { /// Our esteemed main function. Calls Init(), then runs the game lo
 			main_menu->additem(new cMenuSpacer());
 			main_menu->additem("credits", "continue");
 			main_menu->additem("quit", "quit");
-			//menu->init();
-		//menu->mainloop();
 		
 		
 		string nextmode = "main_menu";
 		while (nextmode != "quit") {
 		
-			//modes[nextmode]->init();
-			nextmode = modes[nextmode]->mainloop();
-			
+			nextmode = modes[nextmode]->mainloop();	
 		}
-		
-		/*delete quit; delete playmode;
-		delete monomode; delete menu;*/
 		
 		// deinit
 		SDL_WM_GrabInput(SDL_GRAB_OFF);
@@ -58,6 +52,8 @@ int main() { /// Our esteemed main function. Calls Init(), then runs the game lo
 		SDL_Quit();
 		
 		return 0;
+		
+		
 	} catch (char* e) {
 		cout << e << endl;
 		return 1;
@@ -69,17 +65,27 @@ int main() { /// Our esteemed main function. Calls Init(), then runs the game lo
 
 bool Init() { /// Initialises game state.
 	
-	cout << "Initialising .. ";
+	
     //Initialize SDL
     if( SDL_Init( SDL_INIT_EVERYTHING ) < 0 )  return false;
     if( SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_OPENGL ) == NULL )  return false;
+	
     SDL_WM_SetCaption( "Game", NULL );
     //SDL_WM_GrabInput(SDL_GRAB_ON);
     SDL_ShowCursor(0);
     
     //Initialize OpenGL
     if( InitGL() == false ) return false;
-
+    glClearColor( 0.5, 0.5, 0.5, 1 ); glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+   
+    debug_pane = *(new cTextPane(new cFont("data/font2.png", 6, 16, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz{}[]()<>*+-=/#_%^@\\&|~?!'\".,;:"),
+							 15, SCREEN_HEIGHT - 25, 0, 0)); 
+	
+	debug_pane << "Initialising .. ";
+	debug_pane.draw();
+    draw_frame();
+    
+    //while (1) {}
     
     // load ship model
     try { 
@@ -96,14 +102,15 @@ bool Init() { /// Initialises game state.
 	bpm = 120;
 	score = 0; 
     
-    cout << "done." << endl;
+    debug_pane << "done\n";
+	draw_frame();
     
     return true;    
 }
 
 bool InitGL() {	/// Init tasks related to OpenGL. Called only by Init().
 	
-	InitMode(RESET_MODE);
+	init_mode(RESET_MODE|MENU_MODE);
     
     //Set up a display list for drawing a quad
     dlDrawQuad = glGenLists(1); 
@@ -119,10 +126,20 @@ bool InitGL() {	/// Init tasks related to OpenGL. Called only by Init().
 			 glVertex3f(-1,-0.01,-1);
 			glEnd();
     glEndList();
+    
+    glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
 	
-	CheckErrors();
-	
-	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+	check_errors();
 
     return true;
+}
+
+void draw_frame() { // declaration in includes.h
+
+	debug_pane.draw();
+	
+	SDL_GL_SwapBuffers();
+	
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	
 }

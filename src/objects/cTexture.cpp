@@ -59,6 +59,9 @@ GLuint cTexture::load_texture_from_surface(SDL_Surface* surface) {
 	   					
 	SDL_FreeSurface(tex);
 	
+	width = surface->w;
+	height = surface->h;
+	
 	return new_texid;
 }
 

@@ -15,5 +15,3 @@ int cRandomMode::init () {
 	
 	return 0;
 }
-
-void cRandomMode::mode_specific_updates() {}

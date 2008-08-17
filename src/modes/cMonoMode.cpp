@@ -22,7 +22,7 @@ void cMonoMode::drawship() {
 
 void cMonoMode::drawtrack() {
 	glPushMatrix();
-		//glColor3fv(color[BLUE][0]);
+		glColor3fv(colours[WHITE][1]);
 		
 		// give the illusion of a continually-moving track
 		trackdisp += 0.06*dtime*speed;
@@ -43,10 +43,9 @@ void cMonoMode::CreatePickups() {
 		
 		if (SDL_GetTicks() - newobjecttimer >= 250/speed) {
 			if (pickupcount == 0) {
-				if (GenerateRandomNumber(1, 3) == 1) { 
-					currentposition = GenerateRandomNumber(0,2);
-					currentcolour = GenerateRandomNumber(1,2);
-						currentcolour = (currentcolour == 1) ? MONO : WHITE;
+				if (random_int(1, 3) == 1) { 
+					currentposition = random_int(0,2);
+					currentcolour = ( (random_int(1,2) == 1) ? MONO : WHITE );
 					pickupcount = 1;
 	  			}		
 			} else {
@@ -69,21 +68,25 @@ void cMonoMode::CreatePickups() {
 	}
 }
 
-void cMonoMode::mode_specific_updates() {
+string cMonoMode::update() {
+
+	cPlayMode::update();
 
 	// change mono colour
 	
 	static long monofactor = 400000;
 
 	for (int i=0; i<3; i++) {
-		color[MONO][0][i] = 0.5+0.5*sin(  (float)(SDL_GetTicks() + i*monofactor)  *  bpm  /
+		colours[MONO][0][i] = 0.5+0.5*sin(  (float)(SDL_GetTicks() + i*monofactor)  *  bpm  /
 		                                 /*------------------------------------------------*/
 										  (float)(3*monofactor)                             );
-		color[MONO][1][i] = color[MONO][0][i]*0.8;
-		color[MONO][2][i] = color[MONO][1][i]*0.8;
+		colours[MONO][1][i] = colours[MONO][0][i]*0.8;
+		colours[MONO][2][i] = colours[MONO][1][i]*0.8;
 	}
 	
 	// check for end condition
+	if (SDL_GetTicks() - start_time >= 60*1000) return "main_menu";
 	
+	return "continue";
 	
 }

@@ -6,7 +6,7 @@
 #include "SDL/SDL_image.h"
 #include "objects/cFont.h"
 #include "modes/cRandomMode.h"
-#include "modes/cMenuMode.h"
+#include "modes/cTitleMenuMode.h"
 #include "modes/cQuitMode.h"
 #include "modes/cMonoMode.h"
 #include "objects/cScore.h"

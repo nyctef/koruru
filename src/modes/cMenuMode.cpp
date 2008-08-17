@@ -22,17 +22,13 @@ void cMenuMode::additem(cMenuItem* tmpmenu) {
 		
 }
 
-/*int cMenuMode::init() {
-	
-
-}*/
-
 string cMenuMode::mainloop() {
 	string tmpmode;
 	
-	InitMode(RESET_MODE | MENU_MODE );
+	init_mode(RESET_MODE | MENU_MODE );
 	currentitem = menuitems.begin();
 	(*currentitem)->active = true;
+	
 	for (unsigned i=1; i<menuitems.size(); i++) {
 		menuitems[i]->active = false;
 	}
@@ -43,9 +39,9 @@ string cMenuMode::mainloop() {
 			return tmpmode; 
 		}
 		draw();
+		draw_frame();
 		
 		//frames++; if (SDL_GetTicks()-dtime >= 1000) {cout << frames << " fps." << endl; frames = 0; dtime = SDL_GetTicks();} // calc fps.
-		
 	}
 	return "quit";
 }
@@ -129,13 +125,11 @@ void cMenuMode::draw() {
 
 	for (it=menuitems.begin(); it!=menuitems.end(); it++) {
 		glPushMatrix();
-		(*it)->draw();
+		 (*it)->draw();
 		glPopMatrix();
 		glTranslatef(0, -2, 0);
 		
 	}
-	SDL_GL_SwapBuffers();
-	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void cMenuMode::draw_cursor(unsigned x, unsigned y) {
@@ -148,7 +142,7 @@ void cMenuMode::draw_cursor(unsigned x, unsigned y) {
 	glGetDoublev(GL_PROJECTION_MATRIX,pjmatrix);
 	glGetIntegerv(GL_VIEWPORT, viewport);
 	
-	GLdouble result[3];
+	GLdouble result[3] = {0};
 	
 	gluUnProject(x, y, 0.01, 
 	             mvmatrix, pjmatrix, viewport,
@@ -156,7 +150,6 @@ void cMenuMode::draw_cursor(unsigned x, unsigned y) {
 	             
 	//if (result[2] < 10)
 	
-	glTranslatef (result[0], -result[1], result[2]); // -y: SDL vs OpenGL
 	
 	//cout << result[0] << " " << -result[1] << " " << result[2] << endl;
 	

@@ -31,7 +31,7 @@ void cShip::draw() {
 			glTranslatef(0.07*sin((float)SDL_GetTicks()*bpm/(float)3000) + bob, 0.3, 0);
 			glColor4f(1,1,1, 0.2);
 		} else {
-			glColor3fv(color[WHITE][0]);
+			glColor3fv(colours[WHITE][0]);
 		}
 		glRotatef(-90,1,0,0);
 		glRotatef(90*bank, 0,1,0);
