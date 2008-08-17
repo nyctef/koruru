@@ -8,6 +8,8 @@ float speed;
 GLuint bpm;
 cTextPane debug_pane;
 
+SDL_AudioSpec* spec,* wanted_spec;
+
 // these shouldn't need to be global, but will be a bit more difficult to integrate (should get done for sake of cleanliness)
 c3DSModel* ship_model;
 c3DSModel* block;
@@ -25,20 +27,23 @@ int main() {
 	        return 1;    
 	    }
 		
+		debug_pane << "Loading modes ... \n"; draw_frame();
+		
 		map<string, iGameMode*> modes;
 		
-		modes["quit"] = new cQuitMode("quit");
-		modes["default_random_game"] = new cRandomMode("default_random_game");
-		modes["default_mono_game"] = new cMonoMode("default_mono_game");
-		cMenuMode* main_menu = new cTitleMenuMode("Main menu", "main_menu");
-		modes["main_menu"] = main_menu;
-			main_menu->additem("endurance", "default_random_game");
-			main_menu->additem("mono", "default_mono_game");
-			main_menu->additem("gametype 3", "continue");
-			main_menu->additem(new cMenuSpacer());
-			main_menu->additem("credits", "continue");
-			main_menu->additem("quit", "quit");
+		modes["quit"] = new cQuitMode("quit"); ddot();
+		modes["default_random_game"] = new cRandomMode("default_random_game"); ddot();
+		modes["default_mono_game"] = new cMonoMode("default_mono_game"); ddot();
+		cMenuMode* main_menu = new cTitleMenuMode("Main menu", "main_menu"); ddot();
+		modes["main_menu"] = main_menu; ddot();
+			main_menu->additem("endurance", "default_random_game"); ddot();
+			main_menu->additem("mono", "default_mono_game"); ddot();
+			main_menu->additem("gametype 3", "continue"); ddot();
+			main_menu->additem(new cMenuSpacer()); ddot();
+			main_menu->additem("credits", "continue"); ddot();
+			main_menu->additem("quit", "quit"); ddot();
 		
+		debug_pane << "done\n"; draw_frame();
 		
 		string nextmode = "main_menu";
 		while (nextmode != "quit") {
@@ -78,20 +83,53 @@ bool Init() { /// Initialises game state.
     if( InitGL() == false ) return false;
     glClearColor( 0.5, 0.5, 0.5, 1 ); glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
    
-    debug_pane = *(new cTextPane(new cFont("data/font2.png", 6, 16, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz{}[]()<>*+-=/#_%^@\\&|~?!'\".,;:"),
+    debug_pane = *(new cTextPane(new cFont("data/font2.png", 6, 16, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789{}[]()<>*+-=/#_%^@\\&|~?!'\".,;:"),
 							 15, SCREEN_HEIGHT - 25, 0, 0)); 
 	
-	debug_pane << "Initialising .. ";
+	debug_pane << "Initialising .. \n";
 	debug_pane.draw();
     draw_frame();
     
-    //while (1) {}
+    // load audio
     
+    av_register_all();
+    
+    wanted_spec = new SDL_AudioSpec;
+	spec = new SDL_AudioSpec;
+    
+	// Set audio settings
+   	wanted_spec->freq = 44100;
+   	wanted_spec->format = AUDIO_S16SYS;
+   	wanted_spec->channels = 1;
+   	wanted_spec->samples = SDL_AUDIO_BUFFER_SIZE;
+    
+    spec->freq = 0;
+    spec->format = 0;
+    spec->channels = 0;
+    spec->samples = 0;
+    
+	debug_pane << "ffmpeg/SDL wrapper [" << __DATE__ << " " << __TIME__ << " build] by jtg\n\n";
+	
+    debug_pane << "Wanted spec: " << wanted_spec->freq << "Hz " << get_audio_format(wanted_spec->format) << " over " 
+		<< (int)wanted_spec->channels << " channels with " << wanted_spec->samples 
+		<< " as the buffer size.\n";
+
+    if (Mix_OpenAudio(wanted_spec->freq, wanted_spec->format, wanted_spec->channels, wanted_spec->samples) == -1) throw SDL_GetError();
+    Mix_QuerySpec(&spec->freq, &spec->format, (int*)&spec->channels);
+    
+   	debug_pane << "Got:         " 
+		<< spec->freq << "Hz " << get_audio_format(spec->format) << " over " 
+		<< (int)spec->channels << " channels\n";
+	
+	// start the audio running (unpause it)
+	SDL_PauseAudio(0);
+		
     // load ship model
+    debug_pane << "loading models ..";
     try { 
-    	ship_model = new c3DSModel("data/ship1.3ds"); 
-    	block = new c3DSModel("data/block1.3ds"); 
-    	track = new c3DSModel("data/track1.3ds");
+    	ship_model = new c3DSModel("data/ship1.3ds"); ddot();
+    	block = new c3DSModel("data/block1.3ds"); ddot();
+    	track = new c3DSModel("data/track1.3ds"); ddot();
     } catch(string error_str) {
 		cerr << "Error: " << error_str << std::endl;
 		exit(1);
@@ -102,7 +140,7 @@ bool Init() { /// Initialises game state.
 	bpm = 120;
 	score = 0; 
     
-    debug_pane << "done\n";
+    debug_pane << "done and done\n";
 	draw_frame();
     
     return true;    

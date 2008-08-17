@@ -94,6 +94,7 @@ public:
 	virtual void drawship();
 	virtual void CreatePickups();
 	virtual int  init();
+	virtual void exit();
 	
 	// these functions can be overridden but remember to call the parent function first.
 	virtual string mainloop();

@@ -31,17 +31,17 @@ int cPlayMode::init() {
 	if (createpickup_thread == NULL) createpickup_thread = SDL_CreateThread(generate_pickups_thread, (void*)this);
 		
 	// OH EM GEE MEMORY LEAKS
-	objectlist.clear();
-	pickuplist.clear();
-	particleslist.clear();
+	objectlist.clear(); ddot();
+	pickuplist.clear(); ddot();
+	particleslist.clear(); ddot();
 	
 	playtable = *(new cPlayTable(3,7));
 	
-	srand(time(NULL));
+	srand(time(NULL)); ddot();
 	
-	score.reset();
+	score.reset(); ddot();
 	
-	ship.draw();
+	ship.draw(); ddot();
 	
 	start_time = SDL_GetTicks();
 	
@@ -63,15 +63,17 @@ string cPlayMode::mainloop() {
    	  
    	  atime = SDL_GetTicks();
       if ((tmpquit = HandleEvents()) != "continue") {
-	      return tmpquit;
+      	exit();
+	    return tmpquit;
       }
       
       if ((tmpquit = update()) != "continue") {
-	      return tmpquit;
+      	 exit();
+	     return tmpquit;
       }
       
       
-       draw_screen();
+      draw_screen();
       draw_frame();
       
       SDL_Delay(20);
@@ -363,5 +365,8 @@ void cPlayMode::addpickup(cPickup* pickup) {
 void cPlayMode::addparticles(cParticleSystem* particles) {
 	particleslist.push_back(particles);
 	add(particles);	
+}
+
+void cPlayMode::exit() {
 }
 

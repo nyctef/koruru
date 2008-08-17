@@ -112,3 +112,19 @@ bool check_errors() {
 	return true;
 }
 
+string get_audio_format(Uint32 format) {
+    switch(format) {
+        case AUDIO_U8: return "U8"; break;
+        case AUDIO_S8: return "S8"; break;
+        case AUDIO_U16LSB: return "U16LSB"; break;
+        case AUDIO_S16LSB: return "S16LSB"; break;
+        case AUDIO_U16MSB: return "U16MSB"; break;
+        case AUDIO_S16MSB: return "S16MSB"; break;
+    }
+    return "Unknown";
+}
+
+void ddot() {
+	debug_pane << "."; draw_frame();
+}
+
