@@ -41,7 +41,7 @@ public:
 	/** \brief Prettyprint the table */
 	void printtable();
 	
-	/** \brief Update the table */
+	/** \brief update the table */
 	void update();
 	
 	/** \brief Draw the table */

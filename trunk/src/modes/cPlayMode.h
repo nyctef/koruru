@@ -3,7 +3,7 @@
 
 #include "../utils/includes.h"
 #include "iGameMode.h"
-#include "../objects/cFont.h"
+#include "../objects/cTextPane.h"
 #include "../objects/iObject.h"
 #include "../objects/cScorePickup.h"
 #include "../objects/cDownPickup.h"
@@ -31,6 +31,9 @@ public:
 	int pickupcount;
 	bool quit_createpickup_thread;
 	SDL_Thread* createpickup_thread;
+	cTextPane* score_pane;
+	
+	Uint32 start_time;
 	
 	cShip ship;
 	
@@ -83,10 +86,6 @@ public:
 	/** \brief Add a pickup to the manager. */
 	void addpickup(cPickup* pickup);
 	void addparticles(cParticleSystem* particles);
-	/** \brief Update objects controlled by the manager */
-	void update();
-	/** \brief Draw objects controlled by the manager */
-	void draw();
 	
 	int mode;
 	
@@ -94,14 +93,13 @@ public:
 	virtual void drawtrack();
 	virtual void drawship();
 	virtual void CreatePickups();
-	virtual void mode_specific_updates();
 	virtual int  init();
 	
 	// these functions can be overridden but remember to call the parent function first.
 	virtual string mainloop();
 	virtual string HandleEvents();
-	virtual void Update();
-	virtual void DrawScreen();
+	virtual string update();
+	virtual void draw_screen();
 	
 	// util func
 	void DrawText(char* text, int xpos, int ypos);

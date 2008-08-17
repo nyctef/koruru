@@ -15,6 +15,7 @@ void cFont::draw(string text) {
 	
 	glPushMatrix();
 	glEnable(GL_TEXTURE_2D);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     texture->bind();
 
 	float xoff = 0;  /// x offset.
@@ -24,25 +25,29 @@ void cFont::draw(string text) {
   	  for (unsigned i=0; i<text.size(); ++i){
  
  		if (characters.find(text[i]) != string::npos) {
- 		xoff = characters.find(text[i])*char_width;
- 		
- 		// define our vertices and texcoords, starting from the bottom left-hand corner and going clockwise
-    	glTexCoord2f(xoff/1024, 1);
-    	glVertex2f(off+0, 0);
-    	
-    	glTexCoord2f((xoff+char_width)/1024, 1);
-    	glVertex2f(off+char_width, 0);
-    	
-    	glTexCoord2f((xoff+char_width)/1024, 0);
-    	glVertex2f(off+char_width, char_height);
-    	
-    	glTexCoord2f((xoff)/1024, 0);
-    	glVertex2f(off+0, char_height);
+	 		xoff = characters.find(text[i])*char_width;
+	 		
+	 		//cout << text[i] << " " << characters.find(text[i]) << " " << xoff << " " << xoff/texture->width << " " << (xoff+char_width) << endl;
+	 		
+	 		// define our vertices and texcoords, starting from the bottom left-hand corner and going anticlockwise
+	    	glTexCoord2f(xoff/texture->width, 1);
+	    	 glVertex2f(off, 0);
+	    	
+	    	glTexCoord2f((xoff+char_width)/texture->width, 1);
+	    	 glVertex2f(off+char_width, 0);
+	    	
+	    	glTexCoord2f((xoff+char_width)/texture->width, 0);
+	    	 glVertex2f(off+char_width, char_height);
+	    	
+	    	glTexCoord2f((xoff)/texture->width, 0);
+	    	 glVertex2f(off, char_height);
+	    	
+ 		} else if (strcmp(text.substr(i, 1).c_str(), " ") != 0) {
+ 			cout << "char " << text[i] << " not found in " << characters << endl;
  		}
  	   off += char_width;
  	 }
   	glEnd();
-  	glDisable(GL_TEXTURE_2D);
  	glPopMatrix();
 	
 }
@@ -52,19 +57,17 @@ void cFont::Test() {
 	glPushMatrix();
     texture->bind();
 	glBegin(GL_QUADS);
- 		// define our vertices and texcoords, starting from the bottom left-hand corner and going clockwise
- 		//glColor3f(1,1,1);
     	glTexCoord2f(0,0);
     	 glVertex2f (0,0);
     	 
     	glTexCoord2f(1,0);
-    	 glVertex2f (1024,0);
+    	 glVertex2f (texture->width,0);
     	 
     	glTexCoord2f(1,1);
-    	 glVertex2f (1024,32);
+    	 glVertex2f (texture->width,texture->height);
     	 
     	glTexCoord2f(0,1);
-    	 glVertex2f (0,32);
+    	 glVertex2f (0,texture->height);
   	glEnd();
   	glPopMatrix();
 	

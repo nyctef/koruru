@@ -15,8 +15,7 @@ public:
 	//void generatepickupsequence();
 	void drawtrack();
 	void CreatePickups();
-	
-	void mode_specific_updates();
+	virtual string update();
 	
 	using cPlayMode::pickupcount;
 };

@@ -23,6 +23,9 @@ public:
 	
 	/** \brief Bind the texture so that it will be used for drawing polygons. */
 	void bind();
+	
+	long width;
+	long height;
 
 protected:
 	/** \brief Utility function to load an SDL texture/surface from memory into an OpenGL texture. */

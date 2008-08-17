@@ -140,7 +140,7 @@ void cPlayTable::draw() {
 			glEnable(GL_TEXTURE_2D);
 			glEnable(GL_BLEND);
 			glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-			glColor3fv(color[positions[i][j]->colour][0]);
+			glColor3fv(colours[positions[i][j]->colour][0]);
 			
 			if (positions[i][j]->colour == NONE) {
 				texture2->bind();

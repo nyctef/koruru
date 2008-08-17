@@ -43,7 +43,7 @@ protected:
 	int loadmode(iGameMode* newmode);
 	
 	string handleevents();
-	void draw();
+	virtual void draw();
 	void draw_cursor(unsigned x, unsigned y);
 	unsigned mousex, mousey;
 	

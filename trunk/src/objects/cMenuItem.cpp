@@ -15,9 +15,7 @@ cMenuItem::cMenuItem(string nname, c3DSModel* nmodel, string ntarget) {
 cMenuItem::~cMenuItem(){}
 
 void cMenuItem::draw() {
-	/*GLfloat matrix[16] = {0};
-	glGetFloatv(GL_MODELVIEW_MATRIX, matrix);
-	PrintMatrix(matrix);*/
+
 	glPushMatrix();
 	glDisable(GL_TEXTURE_2D);
 	if (active) {
@@ -44,7 +42,7 @@ void cMenuItem::draw() {
 	glTranslatef(-0.5, -0.5, 0.1);
 	glColor3f(1, 0, 0);
 	glScalef(0.03,0.03,0.03);
-	font->draw(name.c_str());
+	font->draw(name);
 	glPopMatrix();
 }
 
