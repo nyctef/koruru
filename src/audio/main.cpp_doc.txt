@@ -1,0 +1,267 @@
+// basic audio player
+
+/** 
+ * \file main.cpp
+ * 
+ * TODO: change over to SDL_Mixer.
+ * use Mix_HookMusic and normal callback for music, use chunks for sound effects.
+ */ 
+
+#include <ffmpeg/avcodec.h>
+#include <ffmpeg/avformat.h>
+
+#include <SDL/SDL_audio.h>
+#include <SDL/SDL_mixer.h>
+#include <SDL/SDL_thread.h>
+
+#ifdef __MINGW32__
+# undef main /* Prevents SDL from overriding main() */
+#endif
+
+#include <stdio.h>
+#include <math.h>
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+#define AV_SYNC_THRESHOLD   0.01
+#define MAX_ERRORS 3
+
+#include "PacketQueue.h"
+#include "AudioBuffer.h"
+#include "AudioFileState.h"
+
+SDL_AudioSpec* wanted_spec,* spec;
+
+vector<AudioFileState*> states;
+vector<AudioFileState*>* states_ptr = &states;
+
+
+/**
+ * \brief Our callback for SDL.
+ *
+ * Called by SDL when it needs moar data.
+ *  
+ * How this function works: we are given a buffer to fill and the amount of data we need to fill it with.
+ * First, we check if we have data in the buffer. If we don't, then we create new data or fill the buffer 
+ * with 0.
+ * 
+ * Next, we check how much data is in the buffer, and how big the data is going to be after we convert it 
+ * to the format in SDL's stream. We then copy the data over to the buffer and convert it up (if necessary)
+ * to fill the buffer. Note that this doesn't work with downsampling as we would overfill the buffer before 
+ * we convert it down. 
+ * 
+ * We probably need to fix this.
+ *
+ * \param userdata A void pointer to some data we can use (in this case we pass the audiostate)
+ * \param stream The buffer we need to fill
+ * \param len the length of the buffer
+ */
+void audio_callback(void *userdata, Uint8 *stream, int len) {
+	
+	// the audiostate
+    AudioFileState* is = (AudioFileState*)userdata;
+    double pts;
+    int len1; 
+    int audio_size;
+    static int errorcounter = 0;
+	
+    while (len > 0) { // while we still have to supply more data
+        if (is->buffer.index >= is->buffer.size) { // we have no decoded data to work with
+            /* We have already sent all our data; get more */
+            audio_size = is->audio_decode_frame(&pts);
+            if (audio_size < 0) {
+            	
+                // If error, output silence, quit after MAX_ERRORS, or quit if eof reached. 
+                is->buffer.size = 1024;
+                memset(is->buffer.buffer, 0, is->buffer.size);
+                dout << "Error happened: " << endl;
+                if (is->eof_reached) {
+                	dout << "eof_reached true. quitting now." << endl;
+                	dout << "setting quit and pauseaudio from sdl cb" << endl;
+                	SDL_PauseAudio(1);
+			        is->quit = 1;
+			        break;
+                } else {
+                	dout << "filling buffer with silence. Quitting in " << MAX_ERRORS-errorcounter << endl;
+                }
+                errorcounter++;
+                if (errorcounter >= MAX_ERRORS) {
+                	dout << "setting quit and pauseaudio from sdl cb" << endl;
+                	SDL_PauseAudio(1);
+			        is->quit = 1;
+			        break;
+                }
+                
+            	// no error
+            } else {
+            	errorcounter = 0;
+                audio_size =is->synchronize_audio(audio_size, pts);
+                is->buffer.size = audio_size;
+            }
+            is->buffer.index = 0;
+        }
+        
+        // we now have some data to work with in our buffer.
+        
+        /**
+         * Inside the function:
+         * 
+         * len is the amount of data left to put into SDL's stream
+         * 
+         * len1 is the amount of data we have to / will give from our buffer.
+         * 
+         * len2 is the amount of data that will end up in SDL's stream after we have converted it.
+         */
+        
+        // see how much data we have to give
+        len1 = is->buffer.size - is->buffer.index;
+        
+        int len2 = len1 * is->ffmpeg_to_sdl->len_ratio;
+        
+        // don't overflow sdl's buffer (only works when upsampling)
+        if (len2 > len) {
+        	len2 = len; 
+            len1 = len/is->ffmpeg_to_sdl->len_ratio;
+        }
+            
+        //dout << len << " " << len1 << " " << len2 << " " << ffmpeg_to_sdl->len_ratio << endl;
+            
+        // copy the samples across
+        memcpy(stream, (uint8_t *)is->buffer.buffer + is->buffer.index, len1);
+        
+        // convert the samples in-place
+        // TODO: create a new buffer to convert the samples into, then copy into SDL. Should allow for downsampling.
+        is->ffmpeg_to_sdl->buf = stream;
+        is->ffmpeg_to_sdl->len = len1;
+        SDL_ConvertAudio(is->ffmpeg_to_sdl);
+        
+        // move through our buffer and stream
+        len -= len2;
+        stream += len2;
+        is->buffer.index += len1;
+    }
+}
+
+const char* get_audio_format(Uint32 format) {
+    switch(format) {
+        case AUDIO_U8: return "U8"; break;
+        case AUDIO_S8: return "S8"; break;
+        case AUDIO_U16LSB: return "U16LSB"; break;
+        case AUDIO_S16LSB: return "S16LSB"; break;
+        case AUDIO_U16MSB: return "U16MSB"; break;
+        case AUDIO_S16MSB: return "S16MSB"; break;
+    }
+    return "Unknown";
+}
+	 
+
+/** \brief Our esteemed main() function.
+ * 
+ * sets up some variables, creates the audiofilestate objects and then waits for events.
+ */
+int main(int argc, char* argv[]) { try {
+	
+	cout << "ffmpeg/SDL wrapper [" << __DATE__ << " " << __TIME__ << " build] by jtg" << endl << endl;
+
+    SDL_Event event;
+    
+    if (argc < 2) throw "Usage: ffmpeg_test file [file2] ...\n";
+    
+    if (SDL_Init(SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_VIDEO)) throw "Could not initialize SDL - %s\n";
+    
+    SDL_Surface* screen = SDL_SetVideoMode(320, 240, 0, 0);
+    if (screen == NULL) cout << DEBUG_INFO << "keyboard events won't work";
+    // Register formats and codecs
+    av_register_all();
+    
+    wanted_spec = new SDL_AudioSpec;
+	spec = new SDL_AudioSpec;
+    
+	// Set audio settings
+   	wanted_spec->freq = 44100;
+   	wanted_spec->format = AUDIO_S16SYS;
+   	wanted_spec->channels = 1;
+   	wanted_spec->samples = SDL_AUDIO_BUFFER_SIZE;
+/*   	wanted_spec->callback = audio_callback;
+   	wanted_spec->userdata = states_ptr;*/
+    
+    spec->freq = 0;
+    spec->format = 0;
+    spec->channels = 0;
+    spec->samples = 0;
+	
+    dout<< "Wanted spec: " 
+		<< wanted_spec->freq << "Hz " << get_audio_format(wanted_spec->format) << " over " 
+		<< (int)wanted_spec->channels << " channels with " << wanted_spec->samples 
+		<< " as the buffer size." << endl;
+
+    //if (SDL_OpenAudio(wanted_spec, spec) < 0) throw SDL_GetError();
+    if (Mix_OpenAudio(wanted_spec->freq, wanted_spec->format, wanted_spec->channels, wanted_spec->samples) == -1) throw SDL_GetError();
+    Mix_QuerySpec(&spec->freq, &spec->format, (int*)&spec->channels);
+    
+   	dout<< "Got:         " 
+		<< spec->freq << "Hz " << get_audio_format(spec->format) << " over " 
+		<< (int)spec->channels << " channels" << endl;  
+    
+    // loop through our files and process them
+    for (int i=1; i<argc; i++) {
+    	dout << i << "/" << argc - 1 << " Adding file " << argv[i] << endl;
+    	states.push_back(new AudioFileState(argv[i]));
+    }
+
+	for (unsigned j=0; j<states.size(); j++) {
+		
+		AudioFileState* is = states[j];
+		cout << states[j]->filename << endl;
+		
+		Mix_Chunk* hello = Mix_LoadWAV("hellosoft2.wav");
+		int hello_chan = -1;
+		
+		Mix_HookMusic(audio_callback, is);
+	
+		// start the audio running (unpause it)
+		SDL_PauseAudio(0);
+	
+		// handle events
+	    while (1) {
+	        while (SDL_PollEvent(&event)) { 
+	        	
+		        switch (event.type) {
+			        case SDL_QUIT:
+			        	dout << "caught quit event" << endl;
+			            is->quit = true;
+			            SDL_Quit();
+			            exit(0);
+			            break;
+			        case SDL_KEYDOWN:
+			        	switch(event.key.keysym.sym) {
+			        		case SDLK_h:
+			        			hello_chan = Mix_PlayChannel(-1, hello, 0);
+			        			cout << "ping " << hello_chan << Mix_GetError() <<endl;
+			        			break;
+			        		case SDLK_SPACE:
+			        			is->end();
+			        			break;
+			        		default:
+			        			break;
+			        	}
+			        default:
+			        	//dout << "unhandled event type " << (int)(event.type) << " " << SDL_USEREVENT << " " << FF_QUIT_EVENT << endl;
+			            break;
+		        }
+	        } 
+	        
+	        if (is->quit == 1) break;
+	        
+	        SDL_Delay(10);
+	    }
+	}
+    return 0;
+} catch (const char* e) {
+	cout << DEBUG_INFO << "Unhandled Exception:" <<  endl << e << endl;
+} catch (char* e) {
+	cout << DEBUG_INFO << "Unhandled Exception:" <<  endl << e << endl;
+}
+}
