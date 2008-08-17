@@ -8,9 +8,6 @@ cTextPane::~cTextPane() {
 	
 }
 
-/* template <class T>
-void cTextPane::add(const T& t) */
-
 void cTextPane::clear() {
 	text = "";
 }

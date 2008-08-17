@@ -2,20 +2,26 @@
 #define CMONOMODE_H_
 
 #include "cPlayMode.h"
+#include "../audio/mPlayAudioFile.h"
 
 #define MONO_TRACK_WIDTH 5
 
-class cMonoMode : public cPlayMode {
+/** \brief Basic 'mono' game 
+ */
+class cMonoMode : public cPlayMode, public mPlayAudioFile {
 public:
 	cMonoMode(const char* name);
 	virtual ~cMonoMode();
 	
+	// all of these functions are inherited from cPlayMode
+	
 	int init();
 	void drawship();
-	//void generatepickupsequence();
 	void drawtrack();
 	void CreatePickups();
 	virtual string update();
+	
+	virtual void exit();
 	
 	using cPlayMode::pickupcount;
 };

@@ -31,7 +31,8 @@ unsigned random_int(unsigned low, unsigned high);
 bool init_mode(long long mode);
 bool check_errors();
 void draw_frame(); // definition in main.cpp
-
+string get_audio_format(Uint32 format);
+void ddot();
 /* constants */
 
 extern Uint32 	SCREEN_HEIGHT;

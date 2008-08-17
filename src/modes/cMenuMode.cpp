@@ -23,6 +23,9 @@ void cMenuMode::additem(cMenuItem* tmpmenu) {
 }
 
 string cMenuMode::mainloop() {
+	debug_pane << "Loading menu ... \n";
+	draw_frame(); 
+	
 	string tmpmode;
 	
 	init_mode(RESET_MODE | MENU_MODE );

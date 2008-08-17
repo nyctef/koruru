@@ -31,7 +31,7 @@ protected:
 };
 
  template <class T>
-cTextPane operator<<(cTextPane& lhs, T rhs) {lhs.add(rhs); return lhs;}
+cTextPane& operator<<(cTextPane& lhs, T rhs) {lhs.add(rhs); return lhs;}
 
 extern cTextPane debug_pane;
 

@@ -1,6 +1,6 @@
 #include "cMonoMode.h"
 
-cMonoMode::cMonoMode(const char* name) : cPlayMode(name) {
+cMonoMode::cMonoMode(const char* name) : cPlayMode(name), mPlayAudioFile("data/onemoretime.mp3") {
 }
 
 cMonoMode::~cMonoMode() {
@@ -11,6 +11,8 @@ int cMonoMode::init () {
 	cPlayMode::init();
 	
 	speed *= 2;
+	
+	start_music();
 	
 	return 0;
 }
@@ -84,9 +86,15 @@ string cMonoMode::update() {
 		colours[MONO][2][i] = colours[MONO][1][i]*0.8;
 	}
 	
-	// check for end condition
-	if (SDL_GetTicks() - start_time >= 60*1000) return "main_menu";
+	// check for end condition	
+	if (is_music_finished()) return "main_menu";
 	
 	return "continue";
+	
+}
+
+void cMonoMode::exit() {
+	
+	if(!is_music_finished()) stop_music();
 	
 }
