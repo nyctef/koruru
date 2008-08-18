@@ -1,10 +1,12 @@
-#summary An overview of code copying, contributions and conventions.
+#summary An overview of code copying, compiling, contributions and conventions.
 #labels Phase-Implementation
 = Copying = 
 
-
 All of these source files are distributed under the license as in the COPYING file above
 
+= Compiling =
+
+At the moment the code doesn't have any custom makefiles created for it - Eclipse will work with it as a 'Managed C++ Project', or you can just compile all the .cpp files together -- either into individual object files before linking or straight into one file.
 
 = Contributions = 
 
@@ -25,13 +27,10 @@ for more information. At the moment, contributions will only be accepted if they
     
 == Names == 
   
-  Object methods and variables should be_lowercase_with_underscores. Functions that return a bool
-  should probably be named as a question -- can_open_doors(), or has_no_fear(), for example.
+Object methods and variables should `be_lowercase_with_underscores`. Functions that return a bool should probably be named as a question -- `can_open_doors()`, or `has_no_fear()`, for example. The questions should try to fit with an `if` statement -- for example, `if(music_is_playing())` is better than `if(is_music_playing())`.
+
+Note that these conventions are not followed completely throughout the code - this is an [http://code.google.com/p/koruru/issues/detail?id=14 open issue].
   
+== Braces and Indentation == 
   
- == Braces and Indentation == 
-  
-  Braces are arranged as in a rough k&r style - code appearance/readability should always
-  take preference over any particular style. Indentation should be used liberally - for example, 
-  between glBegin and glEnd, or gl[Push/Pop]Matrix as well as conditionals, loops, functions and 
-  classes.
+Braces are arranged as in a rough k&r style - code appearance/readability should always take preference over any particular style. Indentation should be used liberally - for example, between `glBegin()` and `glEnd()`, or `gl[Push/Pop]Matrix()` as well as conditionals, loops, functions and classes.
