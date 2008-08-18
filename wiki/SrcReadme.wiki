@@ -8,6 +8,18 @@ All of these source files are distributed under the license as in the COPYING fi
 
 At the moment the code doesn't have any custom makefiles created for it - Eclipse will work with it as a 'Managed C++ Project', or you can just compile all the .cpp files together -- either into individual object files before linking or straight into one file.
 
+== Required Libraries ==
+(In no particular order:)
+  * *3ds* - used for 3d model loading. A custom .obj file format will probably be used later.
+  * *GL* - GL and GLU are used for 3D rendering.
+  * *GLU*
+  * *SDL* - SDL is used to give access to display and audio hardware, as well as providing events.
+  * *SDL_mixer*
+  * *SDL_image*
+  * *avformat* - ffmpeg is used for audio file processing, to produce samples to feed to SDL.
+  * *avcodec*
+  * *boost_filesystem* - Boost is used for some platform-independent filesystem operations.
+
 = Contributions = 
 
 Contributions are welcome, especially bug reports and/or patches. See [http://koruru.googlecode.com]
@@ -18,11 +30,11 @@ for more information. At the moment, contributions will only be accepted if they
 
 == Class Names ==  
  
-  Class names are in camel case and have an intial letter that denotes their type:
+Class names are in camel case and have an intial letter that denotes their type:
     
-    * i - interface
-    * c - normal class
-    * m - mixin
+  * i - interface
+  * c - normal class
+  * m - mixin
   
     
 == Names == 
