@@ -10,15 +10,19 @@ At the moment the code doesn't have any custom makefiles created for it - Eclips
 
 == Required Libraries ==
 (In no particular order:)
-  * *3ds* - used for 3d model loading. A custom .obj file format will probably be used later.
-  * *GL* - GL and GLU are used for 3D rendering.
+  * *[http://www.lib3ds.org/ 3ds]* - used for 3d model loading. A custom .obj file format will probably be used later.
+
+  * *[http://mesa3d.org/ GL]* - GL and GLU are used for 3D rendering.
   * *GLU*
-  * *SDL* - SDL is used to give access to display and audio hardware, as well as providing events.
+
+  * *[http://www.libsdl.org/ SDL]* - SDL is used to give access to display and audio hardware, as well as providing events.
   * *SDL_mixer*
   * *SDL_image*
-  * *avformat* - ffmpeg is used for audio file processing, to produce samples to feed to SDL.
+
+  * *[http://ffmpeg.mplayerhq.hu/ avformat]* - ffmpeg is used for audio file processing, to produce samples to feed to SDL.
   * *avcodec*
-  * *boost_filesystem* - Boost is used for some platform-independent filesystem operations.
+
+  * *[http://www.boost.org/ boost_filesystem]* - Boost is used for some platform-independent filesystem operations.
 
 = Contributions = 
 
