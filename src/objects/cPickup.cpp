@@ -1,4 +1,4 @@
-#include "cFlyingPickup.h"
+#include "cPickup.h"
 
 cPickup::cPickup() {
 

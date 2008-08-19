@@ -1,8 +1,9 @@
 #ifndef CTEXTPANE_H_
 #define CTEXTPANE_H_
 
+#include "../../utils/includes.h"
+
 #include "cFont.h"
-#include "../utils/includes.h"
 
 #include <sstream>
 #include <string>

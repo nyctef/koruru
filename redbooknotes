@@ -1,6 +1,0 @@
-glColor3f(1.0, 0.0, 0.0);
- // can be
-float color_array[] = {1.0, 0.0, 0.0};
-glColor3fv(color_array);
-
-set pickups to have emission light, lower rest of game light, more realistic stuffs.

@@ -1,7 +1,7 @@
 #ifndef CSCOREPICKUP_H_
 #define CSCOREPICKUP_H_
 
-#include "cFlyingPickup.h"
+#include "cPickup.h"
 
 class cScorePickup : public cPickup {
 public:

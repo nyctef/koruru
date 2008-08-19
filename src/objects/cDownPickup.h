@@ -1,7 +1,7 @@
 #ifndef CDOWNPICKUP_H_
 #define CDOWNPICKUP_H_
 
-#include "cFlyingPickup.h"
+#include "cPickup.h"
 
 class cDownPickup : public cPickup {
 public:

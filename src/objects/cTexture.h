@@ -1,9 +1,10 @@
 #ifndef CTEXTURE_H_
 #define CTEXTURE_H_
 
-#include "SDL/SDL.h"
+//#include "../utils/includes.h"
+#include "GL/glew.h"
+
 #include "SDL/SDL_image.h"
-#include "SDL/SDL_opengl.h"
 
 #include <iostream>
 using namespace std;
@@ -17,12 +18,16 @@ class cTexture {
 public:
 	/** \brief Use SDL to load the texture from a file */
 	cTexture(string file);
-	/** \brief Load a blank texture */
+	/** \brief Create a blank texture with the selected dimensions */
+	cTexture(int width, int height);
+	/** \brief Create a texture object we can attach a texture to later. */
 	cTexture();
 	virtual ~cTexture();
 	
 	/** \brief Bind the texture so that it will be used for drawing polygons. */
 	void bind();
+	
+	GLuint get_texid() {return texid;}
 	
 	long width;
 	long height;

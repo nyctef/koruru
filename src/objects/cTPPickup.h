@@ -1,7 +1,7 @@
 #ifndef CTPPICKUP_H_
 #define CTPPICKUP_H_
 
-#include "cFlyingPickup.h"
+#include "cPickup.h"
 #include "cPlayTable.h"
 /** \brief "ToPlaytable" Pickup - goes from the ship to the table.
  * 

@@ -2,7 +2,7 @@
 
 cTexture::cTexture(string file) {
 	
-	SDL_Surface* surface = IMG_Load(file.c_str());
+	SDL_Surface* surface = IMG_Load(file.c_str()); 
 	if (!surface) throw "loading file failed with IMG_Load()";
 	
 	texid = load_texture_from_surface(surface);
@@ -10,6 +10,14 @@ cTexture::cTexture(string file) {
 	SDL_FreeSurface(surface);
 }
 
+cTexture::cTexture(int width, int height) {
+
+
+	glGenTextures(1, &texid);
+	bind();
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,  width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	
+}
 cTexture::cTexture() {
 	
 	texid = 0;

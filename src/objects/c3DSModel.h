@@ -1,9 +1,11 @@
 #ifndef C3DSMODEL_H_
 #define C3DSMODEL_H_
 
-#define GL_GLEXT_PROTOTYPES
-#include "SDL/SDL.h"
-#include "SDL/SDL_opengl.h"
+// this file doesn't use includes.h since includes.h links to us.
+//#include "../utils/includes.h"
+
+#include "GL/glew.h"
+
 #include <lib3ds/file.h>
 #include <lib3ds/mesh.h>
 

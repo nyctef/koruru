@@ -2,6 +2,7 @@
 
 cTextPane::cTextPane (cFont* font, int x, int y, int width, int height) 
 	: font(font), x(x), y(y), width(width), height(height) {
+		debug_pane << "Warning: cTextPane is going to be deprecated\n";
 }
 
 cTextPane::~cTextPane() {
