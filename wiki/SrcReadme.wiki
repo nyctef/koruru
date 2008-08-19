@@ -22,6 +22,8 @@ At the moment the code doesn't have any custom makefiles created for it - Eclips
   * *[http://ffmpeg.mplayerhq.hu/ avformat]* - ffmpeg is used for audio file processing, to produce samples to feed to SDL.
   * *avcodec*
 
+  * *[http://id3lib.sourceforge.net/ id3]* - used for reading id3 tags in some files.
+
   * *[http://www.boost.org/ boost_filesystem]* - Boost is used for some platform-independent filesystem operations.
 
 = Contributions = 
