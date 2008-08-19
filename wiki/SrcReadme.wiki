@@ -23,6 +23,7 @@ At the moment the code doesn't have any custom makefiles created for it - Eclips
   * *avcodec*
 
   * *[http://id3lib.sourceforge.net/ id3]* - used for reading id3 tags in some files.
+  * *[http://www.zlib.net/ z]* - used by id3lib.
 
   * *[http://www.boost.org/ boost_filesystem]* - Boost is used for some platform-independent filesystem operations.
 
