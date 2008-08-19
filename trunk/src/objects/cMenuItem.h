@@ -3,7 +3,7 @@
 
 #include "../modes/iGameMode.h"
 #include "c3DSModel.h"
-#include "cFont.h"
+#include "gui/cFont.h"
 #include "../utils/utils.h"
 
 /** \brief Holds data about a particular menu item.

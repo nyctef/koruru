@@ -1,10 +1,12 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
+#include "GL/glew.h"
+
 #include "utils/includes.h"
-//#include "objects/cObjectManager.height"
+
 #include "SDL/SDL_image.h"
-#include "objects/cFont.h"
+#include "objects/gui/cFont.h"
 #include "modes/cRandomMode.h"
 #include "modes/cTitleMenuMode.h"
 #include "modes/cQuitMode.h"

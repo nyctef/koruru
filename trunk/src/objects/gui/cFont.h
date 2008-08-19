@@ -1,15 +1,15 @@
 #ifndef CFONT_H_
 #define CFONT_H_
 
-#include "SDL/SDL.h"
-#include "SDL/SDL_opengl.h"
-#include "SDL/SDL_image.h"
+//#include "../../utils/includes.h"
+
+#include "GL/glew.h"
 
 #include <string>
 #include <cstdio>
 using namespace std;
 
-#include "cTexture.h"
+#include "../cTexture.h"
 
 /** \brief Creates and renders a texture-mapped bitmap fixed-width font.
  */

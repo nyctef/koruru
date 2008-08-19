@@ -45,7 +45,7 @@ int cPlayMode::init() {
 	
 	start_time = SDL_GetTicks();
 	
-	debug_pane.add("\n                  .. done\n");
+	debug_pane.add(" .. done\n");
 	return 0;
 }
 
@@ -54,7 +54,6 @@ string cPlayMode::mainloop() {
 	init();
 	
 	atime = SDL_GetTicks();
-/*	Uint32 frametime = SDL_GetTicks(), frames = 0;                 // ♫ calc fps*/
     
     string tmpquit;
     
@@ -80,7 +79,7 @@ string cPlayMode::mainloop() {
       
       dtime = SDL_GetTicks() - atime;
       
-      //frames++; if (SDL_GetTicks()-frametime >= 1000) {cout << frames << " fps." << endl; frames = 0; frametime = SDL_GetTicks();} // calc fps.
+      
       
 	}
 	

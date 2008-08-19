@@ -3,7 +3,7 @@
 
 #include "../utils/includes.h"
 #include "iGameMode.h"
-#include "../objects/cTextPane.h"
+#include "../objects/gui/cTextPane.h"
 #include "../objects/iObject.h"
 #include "../objects/cScorePickup.h"
 #include "../objects/cDownPickup.h"

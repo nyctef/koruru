@@ -22,7 +22,8 @@ int     SCREEN_BPP = 32;
 
 int main() { 
 	try {		
-	    //Initialize
+		
+	    //Initialise
 	    if( Init() == false ) {
 	        return 1;    
 	    }
@@ -31,17 +32,17 @@ int main() {
 		
 		map<string, iGameMode*> modes;
 		
-		modes["quit"] = new cQuitMode("quit"); ddot();
-		modes["default_random_game"] = new cRandomMode("default_random_game"); ddot();
-		modes["default_mono_game"] = new cMonoMode("default_mono_game"); ddot();
-		cMenuMode* main_menu = new cTitleMenuMode("Main menu", "main_menu"); ddot();
-		modes["main_menu"] = main_menu; ddot();
-			main_menu->additem("endurance", "default_random_game"); ddot();
-			main_menu->additem("mono", "default_mono_game"); ddot();
-			main_menu->additem("gametype 3", "continue"); ddot();
-			main_menu->additem(new cMenuSpacer()); ddot();
-			main_menu->additem("credits", "continue"); ddot();
-			main_menu->additem("quit", "quit"); ddot();
+		modes["quit"] = new cQuitMode("quit"); 									ddot();
+		modes["default_random_game"] = new cRandomMode("default_random_game"); 	ddot();
+		modes["default_mono_game"] = new cMonoMode("default_mono_game"); 		ddot();
+		cMenuMode* main_menu = new cTitleMenuMode("Main menu", "main_menu"); 	ddot();
+		modes["main_menu"] = main_menu;											ddot();
+			main_menu->additem("endurance", "default_random_game"); 			ddot();
+			main_menu->additem("mono", "default_mono_game"); 					ddot();
+			main_menu->additem("gametype 3", "continue"); 						ddot();
+			main_menu->additem(new cMenuSpacer()); 								ddot();
+			main_menu->additem("credits", "continue"); 							ddot();
+			main_menu->additem("quit", "quit"); 								ddot();
 		
 		debug_pane << "done\n"; draw_frame();
 		
@@ -86,7 +87,12 @@ bool Init() { /// Initialises game state.
     debug_pane = *(new cTextPane(new cFont("data/font2.png", 6, 16, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789{}[]()<>*+-=/#_%^@\\&|~?!'\".,;:"),
 							 15, SCREEN_HEIGHT - 25, 0, 0)); 
 	
-	debug_pane << "Initialising .. \n";
+	debug_pane << "Initialising .. \nChecking GLEW ...\n";
+	
+	debug_pane << "OpenGL 1.1" << (GLEW_VERSION_1_1 ? " " : " not " ) << "supported\n";
+	debug_pane << "OpenGL 2.0 (shaders)" << (GLEW_VERSION_2_0 ? " " : " not " ) << "supported\n";
+	debug_pane << "framebuffer objects" << (GLEW_EXT_framebuffer_object ? " " : " not " ) << "supported\n";
+	
 	debug_pane.draw();
     draw_frame();
     
@@ -124,18 +130,13 @@ bool Init() { /// Initialises game state.
 	// start the audio running (unpause it)
 	SDL_PauseAudio(0);
 		
-    // load ship model
-    debug_pane << "loading models ..";
-    try { 
-    	ship_model = new c3DSModel("data/ship1.3ds"); ddot();
-    	block = new c3DSModel("data/block1.3ds"); ddot();
-    	track = new c3DSModel("data/track1.3ds"); ddot();
-    } catch(string error_str) {
-		cerr << "Error: " << error_str << std::endl;
-		exit(1);
-	}
+    // load models
+	debug_pane << "loading models ..";
+	ship_model = new c3DSModel("data/ship1.3ds"); ddot();
+	block = new c3DSModel("data/block1.3ds"); ddot();
+	track = new c3DSModel("data/track1.3ds"); ddot();
     
-    //set the global variables
+    //set some global variables
     dtime = 0;
 	bpm = 120;
 	score = 0; 
@@ -147,6 +148,8 @@ bool Init() { /// Initialises game state.
 }
 
 bool InitGL() {	/// Init tasks related to OpenGL. Called only by Init().
+	
+	//debug_pane << "GL init ... \n";
 	
 	init_mode(RESET_MODE|MENU_MODE);
     
@@ -167,6 +170,8 @@ bool InitGL() {	/// Init tasks related to OpenGL. Called only by Init().
     
     glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
 	
+	glewInit();
+	
 	check_errors();
 
     return true;
@@ -174,8 +179,16 @@ bool InitGL() {	/// Init tasks related to OpenGL. Called only by Init().
 
 void draw_frame() { // declaration in includes.h
 
+//#ifdef DEBUG
+
+	// calc fps.
+    static Uint32 frametime = SDL_GetTicks(); static Uint32 frames = 0;                 
+    frames++; if (SDL_GetTicks()-frametime >= 5000) {debug_pane << frames << " fps.\n"; frames = 0; frametime = SDL_GetTicks();}
+     
 	debug_pane.draw();
 	
+//#endif // def DEBUG
+
 	SDL_GL_SwapBuffers();
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );

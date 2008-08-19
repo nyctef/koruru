@@ -1,14 +1,12 @@
 #ifndef INCLUDES_H_
 #define INCLUDES_H_
 
-// in here we put everything that only depends on external libs, to avoid dependency problems.
-
+#include "GL/glew.h"
 #include "SDL/SDL.h"
-#include "SDL/SDL_opengl.h"
 
 #include "../objects/c3DSModel.h"
 #include "../objects/cScore.h"
-#include "../objects/cTextPane.h"
+#include "../objects/gui/cTextPane.h"
 
 #include <iostream>
 using namespace std;

@@ -1,8 +1,7 @@
 #ifndef CPARTICLE_H_
 #define CPARTICLE_H_
 
-#include "SDL/SDL.h"
-#include "SDL/SDL_opengl.h"
+#include "../utils/includes.h"
 #include <iostream>
 using namespace std;
 
