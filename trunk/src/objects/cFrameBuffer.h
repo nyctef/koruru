@@ -14,7 +14,7 @@ public:
 	cTexture* texture;
 	
 	void bind();
-	void copy_from_texture(cTexture* texture, int x_pos, int y_pos);
+	void copy_from_buffer(cFrameBuffer* other_buffer, int x_pos, int y_pos);
 	static void unbind();
 };
 
