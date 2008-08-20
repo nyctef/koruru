@@ -24,7 +24,7 @@ void cFrameBuffer::bind() {
 	
 }
 
-void cFrameBuffer::copy_from_texture(cTexture* other_texture, int x_pos = 0, int y_pos = 0) {
+void cFrameBuffer::copy_from_buffer(cFrameBuffer* other_buffer, int x_pos = 0, int y_pos = 0) {
 
 	bind();
 	glPushAttrib(GL_VIEWPORT_BIT);
@@ -41,7 +41,9 @@ void cFrameBuffer::copy_from_texture(cTexture* other_texture, int x_pos = 0, int
 	 glPushMatrix();
 	 glLoadIdentity();
 	 
-	 glTranslatef(x_pos, y_pos, 0);
+	glTranslatef(x_pos, y_pos, 0);
+	
+	other_buffer->texture->bind();
 	
 	glBegin(GL_QUADS);
 		// define our vertices and texcoords, starting from the bottom left-hand corner and going anticlockwise

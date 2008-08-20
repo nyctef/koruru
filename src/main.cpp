@@ -92,6 +92,7 @@ bool Init() { /// Initialises game state.
 	debug_pane << "OpenGL 1.1" << (GLEW_VERSION_1_1 ? " " : " not " ) << "supported\n";
 	debug_pane << "OpenGL 2.0 (shaders)" << (GLEW_VERSION_2_0 ? " " : " not " ) << "supported\n";
 	debug_pane << "framebuffer objects" << (GLEW_EXT_framebuffer_object ? " " : " not " ) << "supported\n";
+	debug_pane << "....................\n";
 	
 	debug_pane.draw();
     draw_frame();
