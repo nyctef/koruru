@@ -16,6 +16,8 @@ public:
 	void bind();
 	void copy_from_buffer(cFrameBuffer* other_buffer, int x_pos, int y_pos);
 	static void unbind();
+	
+	void bind_texture();
 };
 
 #endif /*CFRAMEBUFFER_H_*/

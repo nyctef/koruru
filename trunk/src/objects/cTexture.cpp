@@ -12,12 +12,13 @@ cTexture::cTexture(string file) {
 
 cTexture::cTexture(int width, int height) {
 
-
 	glGenTextures(1, &texid);
 	bind();
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,  width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE); 
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 	
 }
+
 cTexture::cTexture() {
 	
 	texid = 0;

@@ -37,7 +37,7 @@ public:
 	 * 
 	 * \param str The string to measure
 	 */ 
-	unsigned string_width(string);
+	unsigned string_width(string str);
 	
 	/** \brief Width of one block character in the font.*/
 	int char_width;    

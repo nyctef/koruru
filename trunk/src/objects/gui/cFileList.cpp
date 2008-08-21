@@ -1,9 +1,15 @@
 #include "cFileList.h"
 
-cFileList::cFileList()
-{
+cFileList::cFileList() : cWindow("fixmefixme") {
 }
 
-cFileList::~cFileList()
-{
+cFileList::~cFileList() {
+}
+
+void cFileList::draw() {
+	
+}
+	
+string cFileList::handle_event(cEvent event) {
+	
 }
