@@ -12,6 +12,7 @@
 #include "modes/cQuitMode.h"
 #include "modes/cMonoMode.h"
 #include "objects/cScore.h"
+#include "objects/gui/cLabel.h"
 
 #include "ffmpeg/avformat.h"
 #include "SDL/SDL_mixer.h"

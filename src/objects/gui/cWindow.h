@@ -9,7 +9,7 @@ using namespace std;
 
 class cWindow {
 public:
-	cWindow(string name, int x_pos, int y_pos, int width, int height);
+	cWindow(string name, int x_pos=0, int y_pos=0, int width=0, int height=0);
 	virtual ~cWindow();
 	
 	string name;
@@ -18,8 +18,10 @@ public:
 	int y_position;
 	int width;
 	int height;
+	
 	bool is_dirty;
 	bool has_focus;
+	bool is_highlighted;
 	
 	cFrameBuffer* buffer;
 	
@@ -36,6 +38,10 @@ public:
 	 * base window/panel/screen thingie.
 	 */
 	virtual void draw(cFrameBuffer* buffer);
+	
+	/** \brief Draw as a normal OpenGL textured quad. Used for the highest-level window to draw to the screen.
+	 */
+	void draw();
 	
 };
 

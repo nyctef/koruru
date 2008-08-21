@@ -2,13 +2,36 @@
 
 cFrameBuffer::cFrameBuffer(int width, int height) {
 	
+	if (width == 0 && height == 0) return;
+	
 	glGenFramebuffersEXT(1, &fbo);
 	bind();
+	
 	texture = new cTexture(width, height);
 	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, texture->get_texid(), 0);
 	
 	GLenum status;
 	if ((status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT)) != GL_FRAMEBUFFER_COMPLETE_EXT) {
+		switch (status) {
+			case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
+				cout << "GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT" << endl; break;
+			case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
+				cout << "GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT" << endl; break;
+			case GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
+				cout << "GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT" << endl; break;
+			case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
+				cout << "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT" << endl; break;
+			case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
+				cout << "GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT" << endl; break;
+			case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
+				cout << "GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT" << endl; break;
+			case GL_FRAMEBUFFER_UNSUPPORTED_EXT:
+				cout << "GL_FRAMEBUFFER_UNSUPPORTED_EXT" << endl; break;
+			default:
+				cout << "ouch" << endl; break;
+		} 
+				
+		cout << width << " " << height << " 0x" << hex << status << dec << endl;
 		throw "error creating framebuffer";
 	}
 }
@@ -68,4 +91,10 @@ void cFrameBuffer::copy_from_buffer(cFrameBuffer* other_buffer, int x_pos = 0, i
 void cFrameBuffer::unbind() {
 
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+}
+
+void cFrameBuffer::bind_texture() {
+
+	texture->bind();
+	
 }

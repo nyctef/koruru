@@ -1,7 +1,8 @@
 #include "cWindow.h"
 
 cWindow::cWindow(string nname, int x_pos, int y_pos, int width, int height) 
-	: name(nname), x_position(x_pos), y_position(y_pos), width(width), height(height), buffer(new cFrameBuffer(width, height)) {
+	: name(nname), x_position(x_pos), y_position(y_pos), width(width), height(height), buffer(new cFrameBuffer(width, height)),
+	is_dirty(false), is_highlighted(false), has_focus(false) {
 	
 }
 
@@ -12,8 +13,6 @@ cWindow::~cWindow() {
 }
 
 void cWindow::draw(cFrameBuffer* parent_buffer) {
-
-	is_dirty = false;
 
 	for (unsigned i=0; i<sub_windows.size(); i++) {
 		
@@ -30,6 +29,8 @@ void cWindow::draw(cFrameBuffer* parent_buffer) {
 		parent_buffer->copy_from_buffer(buffer, x_position, y_position);	
 		
 	}
+	
+	is_dirty = false;
 	
 }
 
@@ -66,8 +67,65 @@ string cWindow::handle_event(cEvent event) {
 				}
 			}
 			break; 
+		case SDL_MOUSEMOTION:
+			
+			// adjust the x and y positions to local coordinates
+			sdl_event.motion.x -= x_position;
+			sdl_event.motion.y -= y_position;
+			
+			// set the highlight to the control underneath the mouse 
+			for (unsigned i=0; i<sub_windows.size(); i++) {
+				if ((sub_windows[i]->x_position <= sdl_event.motion.x) &&
+					(sub_windows[i]->x_position + width >= sdl_event.motion.x) &&
+					(sub_windows[i]->y_position <= sdl_event.motion.y) &&
+					(sub_windows[i]->y_position + height >= sdl_event.motion.y)) {
+			
+					sub_windows[i]->is_highlighted = true;
+				}
+			}
+		default:
+			break;
 		
 		
 	}
 	return "continue";
+}
+
+void cWindow::draw() {
+
+	glEnable(GL_BLEND);
+	glDisable(GL_LIGHTING);
+
+	glMatrixMode(GL_PROJECTION);
+	 glPushMatrix();
+	 glLoadIdentity();
+	 glOrtho(0,SCREEN_WIDTH,0,SCREEN_HEIGHT,-1, 1);
+	glMatrixMode(GL_MODELVIEW);
+	 glPushMatrix();
+	 glLoadIdentity();
+	
+	 glTranslatef(x_position, y_position, 0);
+	 
+	 glPushMatrix();
+	    buffer->bind_texture();
+		glBegin(GL_QUADS);
+	    	glTexCoord2f(0,0);
+	    	 glVertex2f (0,0);
+	    	 
+	    	glTexCoord2f(1,0);
+	    	 glVertex2f (width,0);
+	    	 
+	    	glTexCoord2f(1,1);
+	    	 glVertex2f (width,height);
+	    	 
+	    	glTexCoord2f(0,1);
+	    	 glVertex2f (0,height);
+	  	glEnd();
+  	glPopMatrix();
+	  
+	glMatrixMode(GL_PROJECTION);
+	 glPopMatrix();   
+	glMatrixMode(GL_MODELVIEW);
+	 glPopMatrix();
+	
 }

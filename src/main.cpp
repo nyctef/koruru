@@ -7,6 +7,7 @@ GLuint dlDrawQuad;
 float speed;
 GLuint bpm;
 cTextPane debug_pane;
+cLabel version_label;
 
 SDL_AudioSpec* spec,* wanted_spec;
 
@@ -62,9 +63,12 @@ int main() {
 		
 	} catch (char* e) {
 		cout << e << endl;
+		 cout << gluErrorString(glGetError());
 		return 1;
 	} catch (const GLubyte* e) {
-		cout << (const char*)e << endl;	
+		
+		cout << (const char*)e << endl;
+	   cout << gluErrorString(glGetError());
 		return 1;
 	}
 }
@@ -83,16 +87,19 @@ bool Init() { /// Initialises game state.
     //Initialize OpenGL
     if( InitGL() == false ) return false;
     glClearColor( 0.5, 0.5, 0.5, 1 ); glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    
+    cFont* small_font = new cFont("data/font2.png", 6, 16, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789{}[]()<>*+-=/#_%^@\\&|~?!'\".,;:");
    
-    debug_pane = *(new cTextPane(new cFont("data/font2.png", 6, 16, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789{}[]()<>*+-=/#_%^@\\&|~?!'\".,;:"),
-							 15, SCREEN_HEIGHT - 25, 0, 0)); 
+    debug_pane = *(new cTextPane(small_font, 15, SCREEN_HEIGHT - 25, 0, 0));
+							 
+	version_label = *(new cLabel("Koruru version 0.1alpha", small_font, SCREEN_WIDTH - 150, SCREEN_HEIGHT - 50));
 	
 	debug_pane << "Initialising .. \nChecking GLEW ...\n";
 	
 	debug_pane << "OpenGL 1.1" << (GLEW_VERSION_1_1 ? " " : " not " ) << "supported\n";
 	debug_pane << "OpenGL 2.0 (shaders)" << (GLEW_VERSION_2_0 ? " " : " not " ) << "supported\n";
 	debug_pane << "framebuffer objects" << (GLEW_EXT_framebuffer_object ? " " : " not " ) << "supported\n";
-	debug_pane << "....................\n";
+	debug_pane << "\n....................\n\n";
 	
 	debug_pane.draw();
     draw_frame();
@@ -187,6 +194,8 @@ void draw_frame() { // declaration in includes.h
     frames++; if (SDL_GetTicks()-frametime >= 5000) {debug_pane << frames << " fps.\n"; frames = 0; frametime = SDL_GetTicks();}
      
 	debug_pane.draw();
+	
+	version_label.draw();
 	
 //#endif // def DEBUG
 

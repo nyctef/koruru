@@ -3,10 +3,10 @@
 
 #include "cWindow.h"
 
-class cLabel : public cWindow
-{
+class cLabel : public cWindow {
 public:
-	cLabel();
+	cLabel():cWindow("",0,0,0,0){};
+	cLabel(string text, cFont* font, int x_pos, int y_pos);
 	virtual ~cLabel();
 };
 
