@@ -2,7 +2,7 @@
 
 cWindow::cWindow(string nname, int x_pos, int y_pos, int width, int height) 
 	: name(nname), x_position(x_pos), y_position(y_pos), width(width), height(height), buffer(new cFrameBuffer(width, height)),
-	is_dirty(false), is_highlighted(false), has_focus(false) {
+	dirty(false), highlighted(false), focus(false) {
 	
 }
 
@@ -16,21 +16,21 @@ void cWindow::draw(cFrameBuffer* parent_buffer) {
 
 	for (unsigned i=0; i<sub_windows.size(); i++) {
 		
-		if (sub_windows[i]->is_dirty) {
+		if (sub_windows[i]->dirty) {
 			
-			is_dirty = true;
+			dirty = true;
 			sub_windows[i]->draw(buffer);
 			
 		}
 	} 
 	
-	if (is_dirty) {
+	if (dirty) {
 		
 		parent_buffer->copy_from_buffer(buffer, x_position, y_position);	
 		
 	}
 	
-	is_dirty = false;
+	dirty = false;
 	
 }
 
@@ -44,7 +44,7 @@ string cWindow::handle_event(cEvent event) {
 		case SDL_KEYUP:
 			// send the event to the window that has focus
 			for (unsigned i=0; i<sub_windows.size(); i++) {
-				if (sub_windows[i]->has_focus) {
+				if (sub_windows[i]->focus) {
 					sub_windows[i]->handle_event(event);
 					break;
 				}
@@ -80,7 +80,7 @@ string cWindow::handle_event(cEvent event) {
 					(sub_windows[i]->y_position <= sdl_event.motion.y) &&
 					(sub_windows[i]->y_position + height >= sdl_event.motion.y)) {
 			
-					sub_windows[i]->is_highlighted = true;
+					sub_windows[i]->highlighted = true;
 				}
 			}
 		default:
@@ -95,6 +95,8 @@ void cWindow::draw() {
 
 	glEnable(GL_BLEND);
 	glDisable(GL_LIGHTING);
+	
+	glColor3f(1,1,1);
 
 	glMatrixMode(GL_PROJECTION);
 	 glPushMatrix();
@@ -109,17 +111,17 @@ void cWindow::draw() {
 	 glPushMatrix();
 	    buffer->bind_texture();
 		glBegin(GL_QUADS);
-	    	glTexCoord2f(0,0);
-	    	 glVertex2f (0,0);
+	    	glTexCoord2f(0, 0);
+	    	 glVertex2f (0, 0);
 	    	 
-	    	glTexCoord2f(1,0);
-	    	 glVertex2f (width,0);
+	    	glTexCoord2f(1, 0);
+	    	 glVertex2f (width, 0);
 	    	 
-	    	glTexCoord2f(1,1);
-	    	 glVertex2f (width,height);
+	    	glTexCoord2f(1, 1);
+	    	 glVertex2f (width, height);
 	    	 
-	    	glTexCoord2f(0,1);
-	    	 glVertex2f (0,height);
+	    	glTexCoord2f(0, 1);
+	    	 glVertex2f (0, height);
 	  	glEnd();
   	glPopMatrix();
 	  

@@ -37,6 +37,11 @@ void cTexture::bind() {
 	glBindTexture(GL_TEXTURE_2D, texid);
 
 }
+void cTexture::unbind() {
+	
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+}
 
 GLuint cTexture::load_texture_from_surface(SDL_Surface* surface) {
 	

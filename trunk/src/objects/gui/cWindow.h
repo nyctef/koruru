@@ -19,9 +19,9 @@ public:
 	int width;
 	int height;
 	
-	bool is_dirty;
-	bool has_focus;
-	bool is_highlighted;
+	bool dirty;
+	bool focus;
+	bool highlighted;
 	
 	cFrameBuffer* buffer;
 	
@@ -44,5 +44,8 @@ public:
 	void draw();
 	
 };
+
+extern Uint32 SCREEN_WIDTH;
+extern Uint32 SCREEN_HEIGHT;
 
 #endif /*CWINDOW_H_*/

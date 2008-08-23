@@ -13,10 +13,10 @@ namespace bfs = boost::filesystem;
 
 #include "genres.h"
 
-class PlaylistItem { 
+class cPlaylistItem { 
 public:
-	PlaylistItem();
-	virtual ~PlaylistItem();
+	cPlaylistItem();
+	virtual ~cPlaylistItem();
 	
 	string full_title;
 	

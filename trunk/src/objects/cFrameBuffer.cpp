@@ -1,8 +1,8 @@
 #include "cFrameBuffer.h"
 
-cFrameBuffer::cFrameBuffer(int width, int height) {
+cFrameBuffer::cFrameBuffer(int width, int height) : width(width), height(height) {
 	
-	if (width == 0 && height == 0) return;
+	if (width == 0 && height == 0) return; // usually this means we're not really using the framebuffer: eg if the object is defined outside of a function.
 	
 	glGenFramebuffersEXT(1, &fbo);
 	bind();

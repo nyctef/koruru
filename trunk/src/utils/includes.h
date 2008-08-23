@@ -6,7 +6,7 @@
 
 #include "../objects/c3DSModel.h"
 #include "../objects/cScore.h"
-#include "../objects/gui/cTextPane.h"
+#include "../objects/gui/cMultilineLabel.h"
 
 #include <iostream>
 using namespace std;
