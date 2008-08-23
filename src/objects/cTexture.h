@@ -6,6 +6,8 @@
 
 #include "SDL/SDL_image.h"
 
+#include "iBindable.h"
+
 #include <iostream>
 using namespace std;
 
@@ -13,8 +15,11 @@ using namespace std;
  * 
  * Later (or derivative) versions of this class will probably support
  * multitexturing, animated textures etc.
+ * 
+ * TODO: think about creating an iBindable interface that defines bind() so 
+ * code can render to a texture or framebuffer independantly.
  */
-class cTexture {
+class cTexture : public iBindable{
 public:
 	/** \brief Use SDL to load the texture from a file */
 	cTexture(string file);
@@ -26,11 +31,12 @@ public:
 	
 	/** \brief Bind the texture so that it will be used for drawing polygons. */
 	void bind();
+	void unbind();
 	
 	GLuint get_texid() {return texid;}
 	
-	long width;
-	long height;
+	int width;
+	int height;
 
 protected:
 	/** \brief Utility function to load an SDL texture/surface from memory into an OpenGL texture. */

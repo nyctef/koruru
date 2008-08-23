@@ -1,6 +1,6 @@
 #include "cMonoMode.h"
 
-cMonoMode::cMonoMode(const char* name) : cPlayMode(name), mPlayAudioFile("data/onemoretime.mp3") {
+cMonoMode::cMonoMode(const char* name) : cPlayMode(name), mPlayAudioFile("data/oh.mp3") {
 }
 
 cMonoMode::~cMonoMode() {

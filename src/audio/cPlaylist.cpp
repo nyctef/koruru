@@ -1,10 +1,10 @@
-#include "Playlist.h"
+#include "cPlaylist.h"
 
-Playlist::Playlist()
+cPlaylist::cPlaylist()
 {
 }
 
-Playlist::~Playlist()
+cPlaylist::~cPlaylist()
 {
 }
 
@@ -26,7 +26,7 @@ string remove_first(string input, const char* token) {
 	return result;
 }
 
-void Playlist::parse_plain(char* file) {
+void cPlaylist::parse_plain(char* file) {
 	
 	cout << "parsing plain file " << file << endl;
 	
@@ -37,23 +37,23 @@ void Playlist::parse_plain(char* file) {
 	
 	items.clear();
 	
-	PlaylistItem* tmpitem; 
+	cPlaylistItem* tmpitem; 
 	while (getline(file_stream, current_line)) {
-		tmpitem = new PlaylistItem;
+		tmpitem = new cPlaylistItem;
 		tmpitem->path = current_line;
 		items.push_back(tmpitem);
 	}
 	
 }
 
-void Playlist::parse_pls(char* file) {
+void cPlaylist::parse_pls(char* file) {
 	/** 
 	 * Plan:
 	 * -----
 	 * 
 	 * load file into vector of strings, separated (but not including) newlines
 	 * 
-	 * loop through lines and erase comments, find the [Playlist]/[playlist] 
+	 * loop through lines and erase comments, find the [cPlaylist]/[playlist] 
 	 * line and erase it, find the NumberOfEntries= line and store the value. 
 	 * Find the version= line and remove it (maybe check for =2). Remove blank lines. 
 	 * 
@@ -123,7 +123,7 @@ void Playlist::parse_pls(char* file) {
 	items.resize(num_entries, NULL);
 	
 	for (unsigned i=0; i<items.size(); i++) {
-		items[i] = new PlaylistItem;
+		items[i] = new cPlaylistItem;
 	}
 	
 	int current_item = 0;
@@ -172,7 +172,7 @@ void Playlist::parse_pls(char* file) {
 	}
 }
 
-void Playlist::parse_m3u(char* file) {
+void cPlaylist::parse_m3u(char* file) {
 
 	/** 
 	 * Plan:
@@ -211,10 +211,10 @@ void Playlist::parse_m3u(char* file) {
 	filev.erase(filev.begin());
 	
 	unsigned comma_pos;
-	PlaylistItem* item = NULL;
+	cPlaylistItem* item = NULL;
 	for (unsigned i=0; i<filev.size(); i++) {
 		
-		item = new PlaylistItem;
+		item = new cPlaylistItem;
 		
 		if ((filev[i].compare(0, strlen("#EXTINF:"), "#EXTINF:")) == 0) {
 			tmpstr = remove_first(filev[i], "#EXTINF:");
@@ -239,7 +239,7 @@ void Playlist::parse_m3u(char* file) {
 	}
 }
 
-void Playlist::writeto_plain(char* file) {
+void cPlaylist::writeto_plain(char* file) {
 
 	ofstream out;
 	out.open(file);
@@ -252,7 +252,7 @@ void Playlist::writeto_plain(char* file) {
 	
 }
 
-void Playlist::writeto_pls(char* file) {
+void cPlaylist::writeto_pls(char* file) {
 
 	ofstream out;
 	out.open(file);
@@ -270,7 +270,7 @@ void Playlist::writeto_pls(char* file) {
 	out.close();
 }
 
-void Playlist::writeto_m3u(char* file) {
+void cPlaylist::writeto_m3u(char* file) {
 
 	ofstream out;
 	out.open(file);

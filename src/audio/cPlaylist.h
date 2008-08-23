@@ -9,20 +9,20 @@
 #include <algorithm> // for sort()
 using namespace std;
 
-#include "PlaylistItem.h"
+#include "cPlaylistItem.h"
 
-class Playlist {
+class cPlaylist {
 public:
-	Playlist(char* file);
-	Playlist(string file);
-	Playlist();
+	cPlaylist(char* file);
+	cPlaylist(string file);
+	cPlaylist();
 	
-	virtual ~Playlist();
+	virtual ~cPlaylist();
 	
 	void from_file(char* file);
 	void add_file(char* file);
 	
-	vector<PlaylistItem*> items; 
+	vector<cPlaylistItem*> items; 
 
 //private:	
 	/** The parse_* functions should only be called on an empty playlist: 

@@ -1,16 +1,16 @@
-#include "PlaylistItem.h"
+#include "cPlaylistItem.h"
 
-PlaylistItem::PlaylistItem() {
+cPlaylistItem::cPlaylistItem() {
 }
 
-PlaylistItem::~PlaylistItem() {
+cPlaylistItem::~cPlaylistItem() {
 }
 
-void PlaylistItem::fill_from_file() {
+void cPlaylistItem::fill_from_file() {
 
 }
 
-void PlaylistItem::fill_from_id3() {
+void cPlaylistItem::fill_from_id3() {
 
     ID3_Tag* tag = new ID3_Tag(path.c_str());
 
@@ -43,7 +43,7 @@ void PlaylistItem::fill_from_id3() {
     }
 }
 
-string PlaylistItem::get_title() {
+string cPlaylistItem::get_title() {
 
     if (song.compare("") == 0) {
         if (full_title.compare("") == 0) {
@@ -59,7 +59,7 @@ string PlaylistItem::get_title() {
     }
 }
 
-void PlaylistItem::show_known_info() {
+void cPlaylistItem::show_known_info() {
    ID3_FrameInfo myFrameInfo;
    for (int cur = ID3FID_NOFRAME+1; cur < myFrameInfo.MaxFrameID(); cur ++) { 
      cout << "Short ID: " << 	 myFrameInfo.ShortName(ID3_FrameID(cur)) <<\

@@ -6,8 +6,8 @@ extern Uint32 dtime;
 GLuint dlDrawQuad;
 float speed;
 GLuint bpm;
-cTextPane debug_pane;
-cLabel version_label;
+cMultilineLabel debug_pane;
+cDynamicLabel version_label;
 
 SDL_AudioSpec* spec,* wanted_spec;
 
@@ -63,12 +63,11 @@ int main() {
 		
 	} catch (char* e) {
 		cout << e << endl;
-		 cout << gluErrorString(glGetError());
+		cout << "GL error: " << gluErrorString(glGetError());
 		return 1;
 	} catch (const GLubyte* e) {
-		
 		cout << (const char*)e << endl;
-	   cout << gluErrorString(glGetError());
+	    cout << "GL error: " << gluErrorString(glGetError());
 		return 1;
 	}
 }
@@ -86,13 +85,16 @@ bool Init() { /// Initialises game state.
     
     //Initialize OpenGL
     if( InitGL() == false ) return false;
-    glClearColor( 0.5, 0.5, 0.5, 1 ); glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    glClearColor( 0.5, 0.5, 0.5, 1 ); 
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     
     cFont* small_font = new cFont("data/font2.png", 6, 16, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789{}[]()<>*+-=/#_%^@\\&|~?!'\".,;:");
    
-    debug_pane = *(new cTextPane(small_font, 15, SCREEN_HEIGHT - 25, 0, 0));
+    //debug_pane = *(new cTextPane(small_font, 15, SCREEN_HEIGHT - 25, 0, 0));
+    debug_pane = *(new cMultilineLabel(15, SCREEN_HEIGHT - 20, 80, 15, small_font));
 							 
-	version_label = *(new cLabel("Koruru version 0.1alpha", small_font, SCREEN_WIDTH - 150, SCREEN_HEIGHT - 50));
+	//version_label = *(new cLabel("Koruru version 0.1alpha", small_font, SCREEN_WIDTH - 150, SCREEN_HEIGHT - 50));
+	version_label = *(new cDynamicLabel(40, small_font, SCREEN_WIDTH - 250, 50));
 	
 	debug_pane << "Initialising .. \nChecking GLEW ...\n";
 	
@@ -189,11 +191,16 @@ void draw_frame() { // declaration in includes.h
 
 //#ifdef DEBUG
 
-	// calc fps.
-    static Uint32 frametime = SDL_GetTicks(); static Uint32 frames = 0;                 
-    frames++; if (SDL_GetTicks()-frametime >= 5000) {debug_pane << frames << " fps.\n"; frames = 0; frametime = SDL_GetTicks();}
-     
 	debug_pane.draw();
+
+	// calc fps.
+    static Uint32 frametime = SDL_GetTicks(); static Uint32 frames = 0;     
+    frames++; if (SDL_GetTicks()-frametime >= 5000) {
+    	version_label.set("Koruru version 0.1alpha. fps: ");
+		version_label.add(frames);
+    	frames = 0; 
+    	frametime = SDL_GetTicks();
+    }
 	
 	version_label.draw();
 	

@@ -1,12 +1,23 @@
 #include "cLabel.h"
 
+/**
+ * This constructor works by binding the framebuffer and using cFont to render text to it.
+ */
 cLabel::cLabel(string text, cFont* font, int x_pos, int y_pos) 
  : cWindow("label_" + text, x_pos, y_pos, font->string_width(text), font->char_height) {
+	
+	render_text(text, font);
+	
+}
+
+void cLabel::render_text(string text, cFont* font) {
+	
+	glColor3f(1,1,1);
 	
 	buffer->bind();
 	
 	glPushAttrib(GL_VIEWPORT_BIT);
-	glViewport(0,0,font->string_width(text), font->char_height);
+	glViewport(0, 0, width, height);
 	
 	
 		glEnable(GL_BLEND);
@@ -15,7 +26,7 @@ cLabel::cLabel(string text, cFont* font, int x_pos, int y_pos)
 		glMatrixMode(GL_PROJECTION);
 		 glPushMatrix();
 		 glLoadIdentity();
-		 glOrtho(0, font->string_width(text), 0, font->char_height, -1, 1);
+		 glOrtho(0, width, 0, height, -1, 1);
 		glMatrixMode(GL_MODELVIEW);
 		 glPushMatrix();
 		 glLoadIdentity();
@@ -29,9 +40,6 @@ cLabel::cLabel(string text, cFont* font, int x_pos, int y_pos)
 		 
 	glPopAttrib();
 	buffer->unbind();
-	
-	cout << gluErrorString(glGetError());
-	
 }
 
 cLabel::~cLabel() {

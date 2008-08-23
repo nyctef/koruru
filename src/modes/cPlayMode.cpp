@@ -10,7 +10,7 @@ cPlayMode::cPlayMode(const char* name) : iGameMode(name), ship(ship_model, bpm) 
 	
 	createpickup_thread = NULL;
 	
-	score_pane = new cTextPane(font, SCREEN_WIDTH - font->string_width("          ")/2, 40, 0, 0);
+	score_pane = new cTextPane(font, font->string_width("             ")/2, 40, 0, 0);
 	
 }
 
@@ -21,7 +21,7 @@ cPlayMode::~cPlayMode() {
 
 int cPlayMode::init() {
 	
-	debug_pane.set("Loading new game .. \n");
+	debug_pane.add("Loading new game .. \n");
 	draw_frame();
 	
 	score = 0;
